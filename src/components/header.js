@@ -3,9 +3,20 @@ import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 
 
 export default function Header() {
+
+    window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            document.getElementById("header").classList.add("bg-white");
+        } else {
+            document.getElementById("header").classList.remove("bg-white");
+        }
+    }
+
+
     return (
-        <header className='header'>
-            <Navbar expand="lg" fixed="top">
+        <header id='header' className='header'>
+            <Navbar expand="lg">
                 <Container>
                     <Navbar.Brand href="#home">
                         <img src="/img/logo.png" className="d-inline-block align-top" alt="logo" />

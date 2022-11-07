@@ -21,6 +21,39 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
+        <section className='scroll2'>
+            <Container>
+                <Row>
+                    <Col md={12}>
+                        <h2 className='text-center'>follow These Easy Steps </h2>
+                        <p className='text-center py-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                        <Row className='scroll2-row gx-5 py-5'>
+                            <Col md={4} className='scroll2-col'>
+                                <div className='steps-box'>
+                                    <h4 className='box-sub-head'>Step 1</h4>
+                                    <h3 className='box-head'>Buy Tickets</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                </div>
+                            </Col>
+                            <Col md={4} className='scroll2-col'>
+                                <div className='steps-box'>
+                                    <h4 className='box-sub-head'>Step 1</h4>
+                                    <h3 className='box-head'>Buy Tickets</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                </div>
+                            </Col>
+                            <Col md={4} className='scroll2-col'>
+                                <div className='steps-box'>
+                                    <h4 className='box-sub-head'>Step 1</h4>
+                                    <h3 className='box-head'>Buy Tickets</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
+        </section>
         </>
     )
 }
