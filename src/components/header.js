@@ -1,5 +1,39 @@
 import React from 'react';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+    getDefaultWallets,
+    RainbowKitProvider,
+  } from '@rainbow-me/rainbowkit';
+  import {
+    chain,
+    configureChains,
+    createClient,
+    WagmiConfig,
+  } from 'wagmi';
+  import { alchemyProvider } from 'wagmi/providers/alchemy';
+  import { publicProvider } from 'wagmi/providers/public';
+  import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+
+  const { chains, provider } = configureChains(
+    [chain.polygonMumbai],
+    [
+      alchemyProvider({ apiKey: "49YmnXw90OQ1d2ZRy5hCUcpgi6I6UP6H" }),
+      publicProvider()
+    ]
+  );
+  
+  const { connectors } = getDefaultWallets({
+    appName: 'Lottery',
+    chains
+  });
+  
+  const wagmiClient = createClient({
+    autoConnect: true,
+    connectors,
+    provider
+  })
 
 
 export default function Header() {
@@ -15,6 +49,8 @@ export default function Header() {
 
 
     return (
+        <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
         <header id='header' className='header'>
             <Navbar expand="lg">
                 <Container>
@@ -32,7 +68,7 @@ export default function Header() {
                                 </Nav>
                                 </Col>
                                 <Col md={4}>
-                                    <button className="btn btn-primary connectBtn">Connect Wallet</button>
+                                <ConnectButton className='connectBtn' />
                                 </Col>
                             </Row>
                         </Container>
@@ -40,5 +76,7 @@ export default function Header() {
                 </Container>
             </Navbar>
         </header>
+        </RainbowKitProvider>
+    </WagmiConfig>
     )
 }
