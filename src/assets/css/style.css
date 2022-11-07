@@ -30,6 +30,11 @@ h2 {
     text-transform: capitalize;
 }
 
+h4{
+    font-weight: 700 !important;
+    font-size: 20px !important;
+    line-height: 64px !important;
+}
 p{
     font-weight: 400 !important;
     font-size: 18px !important;
@@ -61,6 +66,18 @@ p{
 
 .connectBtn{
     margin-left: 85px;
+    padding: 12px 16px !important;
+    background: #FFFFFF !important;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    text-transform: capitalize;
+    color: #000000 !important;
+    transition: all 1s ease !important;
+}
+
+.connectBtn:hover{
+    transform: scale(1.1);
 }
 
 section.scroll1 {
@@ -284,7 +301,116 @@ section.scroll1 {
     transform: scale(1.1);
 }
 
+.winner-list-head{
+    border-radius: 12px;
+    padding: 7px 0 3px 0;
+}
 
+.winner-list-body{
+    border-radius:12px;
+}
+
+.winner-bg1 {
+    background: #8E71EA;
+}
+
+.winner-bg2{
+    background: #55499E;
+}
+
+.winnerImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+}
+
+.token-chart {
+    width: 85%;
+}
+
+.scroll5{
+    padding: 120px 0;
+}
+
+.scroll6{
+    padding: 120px 0;
+}
+
+.d-winners{
+    border-radius: 18px;
+}
+
+.d-winners>div:nth-child(n+1)>h5 {
+    font-weight: 500;
+    font-size: 15.56px;
+    line-height: 19px;
+    letter-spacing: 2.71121px;
+    text-transform: uppercase;
+    color: #7780A1;
+}
+
+.d-winners-text {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: 0.105em;
+    text-transform: capitalize;
+    color: #7780A1;
+}
+
+.scroll6-btn {
+    padding: 11.0699px 14.7599px !important;
+    height: 52.14px;
+    background: #FFFFFF !important;
+    border-radius: 16px !important;
+    font-weight: 600 !important;
+    font-size: 14.7599px !important;
+    line-height: 30px !important;
+    text-transform: capitalize;
+    color: #222139 !important;
+    transition: all 0.5s ease !important;
+}
+
+.scroll6-btn:hover {
+    transform: scale(1.1);
+    color: #222139 !important;
+}
+
+.scroll6-btn-tp {
+    padding: 12px 26px !important;
+    height: 52.14px;
+    border: 1px solid #FFFFFF !important;
+    border-radius: 16px !important;
+    margin-left: 20px;
+    transition: all 0.5s ease !important;
+    font-weight: 600 !important;
+    font-size: 14.7599px !important;
+    line-height: 30px !important;
+    text-transform: capitalize;
+}
+
+.scroll6-btn-tp:hover {
+    transform: scale(1.1);
+    color: #fff !important;
+}
+
+.users-img {
+    width: 100%;
+}
+
+ul.social-icons {
+    text-decoration: none !important;
+    text-align: right !important;
+}
+
+.footer-ic {
+    font-size: 33px;
+    color: #8E71EA;
+    border: 1px solid #8E71EA;
+    border-radius: 100px;
+    padding: 6px;
+    margin: 0 4px;
+}
 
 /* Meadia Query */
 @media (max-width: 540px){
