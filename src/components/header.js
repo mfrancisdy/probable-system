@@ -5,7 +5,7 @@ import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 export default function Header() {
     return (
         <header className='header'>
-            <Navbar expand="lg">
+            <Navbar expand="lg" fixed="top">
                 <Container>
                     <Navbar.Brand href="#home">
                         <img src="/img/logo.png" className="d-inline-block align-top" alt="logo" />
