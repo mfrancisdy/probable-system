@@ -15,12 +15,19 @@ body {
     border:none !important;
 }
 
+.theme-text{
+    color: #222139 !important;
+}
+
+.theme-bg{
+    background: #222139 !important;
+}
+
 h2 {
     font-weight: 700 !important;
     font-size: 48px !important;
     line-height: 64px !important;
     text-transform: capitalize;
-    color: #FFFFFF;
 }
 
 p{
@@ -43,8 +50,12 @@ p{
     padding: 18px 0;
 }
 
-.fixed-top {
-    padding: 30px 0;
+.header-sticky {
+    background: rgba( 255, 255, 255, 0.65 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 
@@ -101,6 +112,19 @@ section.scroll1 {
     color: #222139;
 }
 
+.scroll1-btn {
+    font-weight: 500 !important;
+    font-size: 18px !important;
+    line-height: 32px !important;
+    text-transform: capitalize;
+    padding: 10px 20px !important;
+    transition: all 0.5s ease !important;
+}
+
+.scroll1-btn:hover {
+    transform : scale(1.1);
+}
+
 .scroll2{
     background: #222139;
     padding: 60px 0;
@@ -134,6 +158,130 @@ section.scroll1 {
     letter-spacing: 0.105em;
     text-transform: capitalize;
     color: #222139;
+}
+
+.scroll3{
+    padding: 60px 0;
+}
+
+.scroll3-col>img {
+    width: 89%;
+}
+
+.scroll3-row {
+    padding: 6rem 0;
+}
+
+.scroll3-col2 {
+    padding: 0 5rem !important;
+}
+
+.buy-form-container{
+    border-radius: 11px;
+    padding: 40px;
+}
+
+.scroll3-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buy-title {
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 64px;
+    text-transform: capitalize;
+    color: #FFFFFF;
+}
+
+.buy-box>p {
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+}
+
+.progress-bg{
+    background: #444365;
+    border-radius: 5px;
+}
+
+.lottery-progress-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.lottery-progress-text>p {
+    font-weight: 400 !important;
+    font-size: 13px !important;
+    line-height: 37px !important;
+}
+
+.form-title {
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 32px;
+    text-transform: capitalize;
+    color: #fff;
+}
+
+.buy-form-i {
+    background: rgba(255, 255, 255, 0.13) !important;
+    border-radius: 5px !important;
+    border: none !important;
+    color: #fff;
+}
+
+.form-control:focus {
+    color: #fff !important;
+    box-shadow: 0 0 0 0.2rem rgb(142 113 234 / 50%) !important;
+}
+
+.ticketVal-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #8E71EA;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 10px 10px 10px 0;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    text-transform: capitalize;
+    padding: 6px 16px;
+    transition: all 0.3s ease 0s;
+    color: #fff;
+}
+
+.ticketVal-btn:hover {
+    box-shadow: 0 0 0 0.2rem rgba(142, 113, 234, 0.5);
+    transform: scale(1.05);
+}
+
+.total-txt {
+    font-weight: 500 !important;
+    font-size: 17px !important;
+    line-height: 54px !important;
+    text-transform: capitalize;
+}
+
+.buy-btn {
+    height: 67px;
+    background: #8E71EA;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #FFFFFF;
+    padding: 0 20px;
+    transition: all 0.5s ease;
+}
+
+.buy-btn:hover {
+    transform: scale(1.1);
 }
 
 

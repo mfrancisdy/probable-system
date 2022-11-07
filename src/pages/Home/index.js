@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Scroll1img from '../../assets/Images/scroll1win.png';
+import Scroll3img from '../../assets/Images/lottery.png';
+import BuyForm from '../../components/buyform';
 
 export default function Home() {
     
@@ -25,7 +27,7 @@ export default function Home() {
             <Container>
                 <Row>
                     <Col md={12}>
-                        <h2 className='text-center'>follow These Easy Steps </h2>
+                        <h2 className='text-center text-white'>follow These Easy Steps </h2>
                         <p className='text-center py-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
                         <Row className='scroll2-row gx-5 py-5'>
                             <Col md={4} className='scroll2-col'>
@@ -50,6 +52,23 @@ export default function Home() {
                                 </div>
                             </Col>
                         </Row>
+                    </Col>
+                </Row>
+            </Container>
+        </section>
+        <section className='scroll3'>
+            <Container>
+                <Row>
+                    <Col md={12}>
+                        <h2 className="text-center theme-text">Buy Lottery Tickets</h2>
+                    </Col>
+                </Row>
+                <Row className='scroll3-row gx-5'>
+                    <Col md={6} className='scroll3-col'>
+                        <img src={Scroll3img} alt='lottery-tickets' />
+                    </Col>
+                    <Col md={6} className='scroll3-col2'>
+                        <BuyForm />
                     </Col>
                 </Row>
             </Container>
