@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.nav-menu{
+    float:right;
+}
+
+.btn{
+    background: #222139 !important;
+    border-radius: 6px !important;
+    border:none !important;
+}
+
+.header {
+    padding: 36px 0;
+    background: transparent;
+    position: fixed;
+    width: 100%;
+    z-index:5;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    top:0;
+}
+
+
+.connectBtn{
+    margin-left: 85px;
+}
+
+section.scroll1 {
+    top: -116px;
+    background: #fff;
+}
+
+.scroll1-col1 {
+    padding: 16vw 7vw !important;
+}
+
+.scroll1-col2 {
+    background: url('../Images/scroll1bg.png') no-repeat;
+    padding: 17vw 7vw 0vw 7vw;
+    background-size: 100% 150%;
+}
+
+.scroll1-col2>img {
+    display: block;
+    width: 74%;
+    margin: 0 auto;
+}
+
+.scroll1-col1 > h4 {
+    font-weight: 400;
+    font-size: 29px;
+    line-height: 32px;
+    letter-spacing: 0.105em;
+    text-transform: capitalize;
+    color: #000000;
+    font-style: italic;
+}
+
+.scroll1-col1 > h2 {
+    font-weight: 700;
+    font-size: 55px;
+    line-height: 84px;
+    text-transform: capitalize;
+    color: #E59148;
+}
+
+.scroll1-col1 >p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 32px;
+    letter-spacing: 0.105em;
+    text-transform: capitalize;
+    color: #222139;
+}
+
+/* Meadia Query */
+@media (max-width: 540px){
+    .nav-menu{
+        float:none;
+    }
+}
+
+@media (min-width: 541px) and (max-width: 768px){
+    .nav-menu{
+        float:none;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px){
+}
