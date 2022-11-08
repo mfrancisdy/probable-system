@@ -59,7 +59,7 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
-        <section className='scroll3'>
+        <section id='lottery' className='scroll3'>
             <Container>
                 <Row>
                     <Col md={12}>
@@ -76,7 +76,7 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
-        <section className='scroll4 py-5'>
+        <section id='winners' className='scroll4 py-5'>
             <Container>
                 <Row>
                     <Col md={12}>
@@ -91,7 +91,7 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
-        <section className='scroll5'>
+        <section id='rewards' className='scroll5'>
             <Container>
                 <Row>
                     <Col md={6}>

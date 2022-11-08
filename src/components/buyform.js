@@ -1,11 +1,64 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { ethers } from "ethers";
+import { useSigner, useProvider } from 'wagmi'
+import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
+import { erc20address, erc20abi } from "./abis/erc20";
 
 export default function BuyForm() {
 
+    const { data: signer } = useSigner()
+    const provider = useProvider();
+
+    const [ maxTickets, setMaxTickets ] = useState(0);
+    const [ ticketPrice, setTicketPrice ] = useState(0);
+    const [ tickets, setTickets ] = useState(0);
+    const [ totalAmount, setTotalAmount ] = useState(0);
+
+    const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
+    const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
+
+    useEffect(() => {
+        getPoolInfo();
+    }, []);
+
+    const getPoolInfo = async () => {
+        const poolDetails = await lotteryContract.pools(0);
+        setMaxTickets(poolDetails[2].toString());
+        setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
+    }
+
+    function calculateTickets(e) {
+        
+        if ( e > maxTickets ){
+            alert("You cannot buy more than " + maxTickets + " tickets");
+            return;
+        } else {
+            const noOfTickets = e;
+            setTickets(noOfTickets);
+            setTotalAmount(noOfTickets * ticketPrice);
+        }
+    }
+
     function buyTicket(e) {
         e.preventDefault();
+        if( tickets === 0 ){
+            alert("Please enter a valid number of tickets");
+            return;
+        } else if ( tickets > maxTickets ){
+            alert("You cannot buy more than " + maxTickets + " tickets");
+            return;
+        } else {
+            const amount = tickets * ticketPrice;
+            const sendTX = new ethers.Contract(erc20address, erc20abi, signer);
+            sendTX.approve(lotteryaddress, amount).then((tx) => {
+                console.log("tx", tx);
+                lotteryContract.buyTickets(0, tickets).then((tx) => {
+                    console.log("tx", tx);
+                });
+            });
+        }
     }
 
     return (
@@ -31,13 +84,13 @@ export default function BuyForm() {
                 <div className='buy-form'>
                     <h3 className="form-title">Enter Tickets</h3>
                     <form onSubmit={(e)=>buyTicket(e)}>
-                        <input className="form-control buy-form-i my-3" type="number" placeholder="Enter Total Number of Tickets To Buy" />
+                        <input className="form-control buy-form-i my-3" type="number" min={1} onChange={(e)=>{setTickets(e.target.value)}} value={tickets} placeholder="Enter Total Number of Tickets To Buy" />
                         <Row>
                             <Col md={12}>
-                                <button className="ticketVal-btn">5 Tickets</button>
-                                <button className="ticketVal-btn">10 Tickets</button>
-                                <button className="ticketVal-btn">20 Tickets</button>
-                                <button className="ticketVal-btn">50 Tickets</button>
+                                <button type="button" className="ticketVal-btn" onClick={()=>{calculateTickets(5)}}>5 Tickets</button>
+                                <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(10)}}>10 Tickets</button>
+                                <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(20)}}>20 Tickets</button>
+                                <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(50)}}>50 Tickets</button>
                             </Col>
                         </Row>
                         <Row className="mt-5 total-value">
@@ -46,8 +99,8 @@ export default function BuyForm() {
                                 <p className="total-txt">Total Amount</p>
                             </Col>
                             <Col md={6} style={{textAlign:'right'}}>
-                                <p className="total-txt">0.01 ETH</p>
-                                <p className="total-txt">0.01 ETH</p>
+                                <p className="total-txt">{ticketPrice} ETH</p>
+                                <p className="total-txt">{totalAmount} ETH</p>
                             </Col>
                         </Row>
                         <Row className="mt-3">

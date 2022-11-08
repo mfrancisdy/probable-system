@@ -1,39 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-    getDefaultWallets,
-    RainbowKitProvider,
-  } from '@rainbow-me/rainbowkit';
-  import {
-    chain,
-    configureChains,
-    createClient,
-    WagmiConfig,
-  } from 'wagmi';
-  import { alchemyProvider } from 'wagmi/providers/alchemy';
-  import { publicProvider } from 'wagmi/providers/public';
-  import { ConnectButton } from '@rainbow-me/rainbowkit';
-
-
-  const { chains, provider } = configureChains(
-    [chain.polygonMumbai],
-    [
-      alchemyProvider({ apiKey: "49YmnXw90OQ1d2ZRy5hCUcpgi6I6UP6H" }),
-      publicProvider()
-    ]
-  );
-  
-  const { connectors } = getDefaultWallets({
-    appName: 'Lottery',
-    chains
-  });
-  
-  const wagmiClient = createClient({
-    autoConnect: true,
-    connectors,
-    provider
-  })
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 
 export default function Header() {
@@ -47,10 +14,12 @@ export default function Header() {
         }
     }
 
+    function activeMenu(val){
+
+    }
+
 
     return (
-        <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
         <header id='header' className='header'>
             <Navbar expand="lg">
                 <Container>
@@ -62,12 +31,14 @@ export default function Header() {
                         <Container>
                             <Row>
                                 <Col md={8}>
-                                <Nav className="nav-menu">
-                                    <Nav.Link href="#home">Home</Nav.Link>
-                                    <Nav.Link href="#link">Link</Nav.Link>
+                                <Nav className="nav-menu justify-content-center">
+                                    <Nav.Link id='item0' href="/" className='px-3' onClick={()=>activeMenu(0)}>Home</Nav.Link>
+                                    <Nav.Link id='item1' href="#rewards" className='px-3' onClick={()=>activeMenu(1)}>Rewards</Nav.Link>
+                                    <Nav.Link id='item2' href="#winners" className='px-3' onClick={()=>activeMenu(2)}>Winners</Nav.Link>
+                                    <Nav.Link id='item3' href="#lottery" className='px-3' onClick={()=>activeMenu(3)}>Lottery</Nav.Link>
                                 </Nav>
                                 </Col>
-                                <Col md={4}>
+                                <Col md={4} className='d-flex justify-content-end'>
                                 <ConnectButton className='connectBtn' />
                                 </Col>
                             </Row>
@@ -76,7 +47,5 @@ export default function Header() {
                 </Container>
             </Navbar>
         </header>
-        </RainbowKitProvider>
-    </WagmiConfig>
     )
 }
