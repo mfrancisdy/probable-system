@@ -7,9 +7,9 @@ export default function Footer() {
     return (
         <footer className="theme-bg">
             <Container>
-                <Row>
-                    <Col className="py-3 d-flex align-items-center" md={8}>
-                        <p>Copyright Ⓒ Name 2022</p>
+                <Row className='flex-column-reverse flex-sm-column-reverse flex-md-row'>
+                    <Col className="py-3 d-block d-md-flex align-items-center" md={8}>
+                        <p className='cpy'>Copyright Ⓒ Name 2022</p>
                     </Col>
                     <Col className="py-3" md={4}>
                         <ul className="social-icons">

@@ -20,7 +20,7 @@ export default function Home() {
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
                         <button className='btn btn-primary scroll1-btn'>Enter lottery</button>
                     </Col>
-                    <Col md={6} className='scroll1-col2'>
+                    <Col md={6} className='scroll1-col2 d-none d-sm-none d-md-block'>
                         <img src={Scroll1img} alt='scroll1' />
                     </Col>
                 </Row>
@@ -32,7 +32,7 @@ export default function Home() {
                     <Col md={12}>
                         <h2 className='text-center text-white'>follow These Easy Steps </h2>
                         <p className='text-center py-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
-                        <Row className='scroll2-row gx-5 py-5'>
+                        <Row className='scroll2-row gx-5 gy-5 py-5'>
                             <Col md={4} className='scroll2-col'>
                                 <div className='steps-box'>
                                     <h4 className='box-sub-head'>Step 1</h4>
@@ -67,7 +67,7 @@ export default function Home() {
                     </Col>
                 </Row>
                 <Row className='scroll3-row gx-5'>
-                    <Col md={6} className='scroll3-col'>
+                    <Col md={6} className='scroll3-col d-none d-sm-none d-md-flex'>
                         <img src={Scroll3img} alt='lottery-tickets' />
                     </Col>
                     <Col md={6} className='scroll3-col2'>
@@ -93,7 +93,7 @@ export default function Home() {
         </section>
         <section id='rewards' className='scroll5'>
             <Container>
-                <Row>
+                <Row className='flex-column-reverse flex-sm-column-reverse flex-md-row'>
                     <Col md={6}>
                         <img src={Chart} alt='chart' className='token-chart'/>
                     </Col>
@@ -106,7 +106,7 @@ export default function Home() {
         </section>
         <section className='scroll6'>
             <Container>
-                <Row className='theme-bg py-5 px-5 d-winners'>
+                <Row className='theme-bg py-5 px-5 m-0 d-winners'>
                     <Col md={6}>
                         <h5>get a chance to win!</h5>
                         <h2 className='text-white py-3'>Daily Winners</h2>
@@ -116,7 +116,7 @@ export default function Home() {
                             <button className='btn btn-primary scroll6-btn-tp'>View More</button>
                         </div>
                     </Col>
-                    <Col md={6}>
+                    <Col md={6} className='d-none d-sm-none d-md-block'>
                         <img src={Users} alt='users' className='users-img'/>
                     </Col>
                 </Row>

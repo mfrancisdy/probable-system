@@ -94,11 +94,11 @@ export default function BuyForm() {
                             </Col>
                         </Row>
                         <Row className="mt-5 total-value">
-                            <Col md={6}>
+                            <Col xs={6} sm={6} md={6}>
                                 <p className="total-txt">Per Ticket Price</p>
                                 <p className="total-txt">Total Amount</p>
                             </Col>
-                            <Col md={6} style={{textAlign:'right'}}>
+                            <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
                                 <p className="total-txt">{ticketPrice} ETH</p>
                                 <p className="total-txt">{totalAmount} ETH</p>
                             </Col>

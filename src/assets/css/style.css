@@ -129,9 +129,9 @@ section.scroll1 {
 }
 
 .scroll1-col1 > h2 {
-    font-weight: 700;
-    font-size: 55px;
-    line-height: 84px;
+    font-weight: 700 !important;
+    font-size: 55px !important;
+    line-height: 84px !important;
     text-transform: capitalize;
     color: #E59148;
 }
@@ -428,16 +428,109 @@ ul.social-icons {
     margin: 0 4px;
 }
 
+.justify-sm-none{
+    justify-content: flex-end!important;
+}
+
 /* Meadia Query */
+
+@media (max-width: 340px){
+    .scroll6-btn-tp {
+        margin: 19px 0px 0 10px !important;
+        position: relative;
+        left: -12px;
+    }
+
+    .buy-form-container {
+        padding: 40px 24px !important;
+    }
+    .total-txt {
+        font-size: 11px !important;
+    }
+}
+
 @media (max-width: 540px){
     .nav-menu{
         float:none;
+    }
+    .scroll1-row {
+        padding: 83px 0;
+    }
+    .navbar {
+        padding: 0 14px;
+    }
+    .header{
+        background: rgba( 255, 255, 255, 0.65 );
+        box-shadow: 0 0px 2px 0 rgb(31 38 135 / 37%);
+        backdrop-filter: blur( 6px );
+        -webkit-backdrop-filter: blur( 6px );
+        border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
+        padding: 18px 14px;
+    }
+    .justify-sm-none{
+        justify-content: unset !important;
+    }
+    .scroll1-col1 > h2 {
+        font-size: 39px !important;
+    }
+    .scroll1-col1 > h4 {
+        font-size: 22px !important;
+    }
+    .scroll1-btn{
+        margin-top: 9px;
+    }
+    .scroll3-col2 {
+        padding: 0 2rem !important;
+    }
+    .total-txt {
+        font-size: 14px;
+    }
+    ul.social-icons {
+        text-align: center !important;
+        padding: 25px 0;
+    }
+    .cpy{
+        text-align: center;
+    }
+    .d-winners {
+        padding: 3rem 1rem !important;
     }
 }
 
 @media (min-width: 541px) and (max-width: 768px){
     .nav-menu{
         float:none;
+    }
+    .scroll1-row {
+        padding: 83px 0;
+    }
+    .navbar {
+        padding: 0 14px;
+    }
+    .justify-sm-none{
+        justify-content: unset;
+    }
+    .scroll1-col1 > h2 {
+        font-size: 39px !important;
+    }
+    .scroll1-col1 > h4 {
+        font-size: 22px !important;
+    }
+    .scroll1-btn{
+        margin-top: 9px;
+    }
+    .scroll3-col2 {
+        padding: 0 2rem !important;
+    }
+    .total-txt {
+        font-size: 14px;
+    }
+    ul.social-icons {
+        text-align: center !important;
+        padding: 25px 0;
+    }
+    .cpy{
+        text-align: center;
     }
 }
 

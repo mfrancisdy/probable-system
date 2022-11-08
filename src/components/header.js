@@ -38,7 +38,7 @@ export default function Header() {
                                     <Nav.Link id='item3' href="#lottery" className='px-3' onClick={()=>activeMenu(3)}>Lottery</Nav.Link>
                                 </Nav>
                                 </Col>
-                                <Col md={4} className='d-flex justify-content-end'>
+                                <Col md={4} className='d-flex justify-sm-none'>
                                 <ConnectButton className='connectBtn' />
                                 </Col>
                             </Row>
