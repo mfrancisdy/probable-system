@@ -14,6 +14,8 @@ import Web3 from 'web3';
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 
+window.Buffer = require('buffer/').Buffer;
+
 export default function Home() {
 
     const closeWalletPopup = () => {
