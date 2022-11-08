@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
-import MetaMask from '../../assets/Images/meta.png';
-import Wc from '../../assets/Images/wc.png';
-import Tp from '../../assets/Images/tp.png';
-import Bk from '../../assets/Images/bk.png';
+import MetaMask from '../assets/Images/meta.png';
+import Wc from '../assets/Images/wc.png';
+import Tp from '../assets/Images/tp.png';
+import Bk from '../assets/Images/bk.png';
 import Web3 from 'web3';
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
@@ -53,7 +53,7 @@ export default function Header() {
                                     method: 'wallet_addEthereumChain',
                                     params: [
                                         {
-                                            chainName: 'Polygon Mainnet',
+                                            chainName: 'Polygon Testnet',
                                             chainId: Web3.utils.toHex(chainId),
                                             nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
                                             rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
@@ -85,7 +85,8 @@ export default function Header() {
                     if (error) {
                         throw error;
                     }
-                    localStorage.setItem('connectedWallet', 'metamask');
+                    localStorage.setItem('connectedWallet', 'wc');
+                    setWalletConnected(true);
                     closeWalletPopup();
                 });
             } else {
@@ -94,13 +95,14 @@ export default function Header() {
                         throw error;
                     }
                     localStorage.setItem('connectedWallet', 'wc');
+                    setWalletConnected(true);
                     closeWalletPopup();
                 });
     
             }
         }else if(wallet === 'tp'){
             closeWalletPopup();
-        }else if(wallet === 'bk'){
+        } else if(wallet === 'bk'){
             
             const provider = window.bitkeep && window.bitkeep.ethereum;
             console.log(provider)
@@ -108,10 +110,44 @@ export default function Header() {
                 window.open('https://bitkeep.com/en/download?type=2');
                 throw "Please go to our official website to download!!"
             } else {
-
+                const connect = await provider.request({
+                    method: "eth_requestAccounts",
+                });
+                const chainId = 80001
+                if( provider.chainId !== chainId ) {
+                    try {
+                        await provider.request({
+                            method: 'wallet_switchEthereumChain',
+                             params: [{ chainId: Web3.utils.toHex(chainId) }]
+                        });
+                    } catch (err) {
+                        // This error code indicates that the chain has not been added to MetaMask
+                        if (err.code === 4902) {
+                            await provider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        chainName: 'Polygon Testnet',
+                                        chainId: Web3.utils.toHex(chainId),
+                                        nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+                                        rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                    }
+                                ]
+                            });
+                        }
+                    }
+                }
+                localStorage.setItem('connectedWallet', 'bk');
+                setWalletConnected(true);
+                closeWalletPopup();
             }
         }
         
+    }
+
+    function disconnectWallet(){
+        localStorage.removeItem('connectedWallet');
+        setWalletConnected(false);
     }
 
     return (
@@ -135,7 +171,9 @@ export default function Header() {
                                 </Nav>
                                 </Col>
                                 <Col md={4} className='d-flex justify-sm-none'>
-                                <button className='connectBtn' onClick={()=>selectWallet()}>Connect Wallet</button>
+                                <button className={walletConnected === true ? 'connectedBtn' : 'connectBtn'} onClick={walletConnected === true ? ()=>{disconnectWallet()} : ()=>selectWallet()}>
+                                    {walletConnected === true ? 'Disconnect Wallet' : 'Connect Wallet' }
+                                </button>
                                 </Col>
                             </Row>
                         </Container>

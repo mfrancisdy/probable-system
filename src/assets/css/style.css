@@ -88,6 +88,21 @@ p{
     transform: scale(1.1);
 }
 
+.connectedBtn {
+    background: #f4074b;
+    color: #fff;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: all 1s ease !important;
+}
+
+.connectedBtn:hover{
+    transform: scale(1.1);
+}
+
 button.iekbcc0.iekbcc9.ju367v73.ju367v7o.ju367v9c.ju367vn.ju367vec.ju367vex.ju367v11.ju367v1c.ju367v2b.ju367v8o._12cbo8i3.ju367v8m._12cbo8i4._12cbo8i6 {
     background: rgb(255, 255, 255) !important;
     color: rgb(0, 0, 0) !important;

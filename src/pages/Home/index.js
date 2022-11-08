@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Scroll1img from '../../assets/Images/scroll1win.png';
 import Scroll3img from '../../assets/Images/lottery.png';
