@@ -5,6 +5,12 @@ import { ethers } from "ethers";
 import { useSigner, useProvider } from 'wagmi'
 import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 import { erc20address, erc20abi } from "./abis/erc20";
+import WalletConnect from "@walletconnect/client";
+import QRCodeModal from "@walletconnect/qrcode-modal";
+import Web3 from 'web3';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function BuyForm() {
 
@@ -17,6 +23,7 @@ export default function BuyForm() {
     const [ totalAmount, setTotalAmount ] = useState(0);
     const [ ticketsSold, setTicketsSold ] = useState(0);
     const [ soldPercentage, setSoldPercentage ] = useState(0);
+    
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
     const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
@@ -37,7 +44,7 @@ export default function BuyForm() {
     function calculateTickets(e) {
         
         if ( e > maxTickets ){
-            alert("You cannot buy more than " + maxTickets + " tickets");
+            toast.error("You cannot buy more than " + maxTickets + " tickets");
             return;
         } else {
             const noOfTickets = e;
@@ -46,29 +53,180 @@ export default function BuyForm() {
         }
     }
 
+
     function buyTicket(e) {
         e.preventDefault();
+        if (localStorage.getItem('connectedWallet') === null) {
+            toast.error("Please connect wallet");
+        } else {
         if( tickets === 0 ){
-            alert("Please enter a valid number of tickets");
+            toast.error("Please enter the number of tickets you want to buy");
             return;
         } else if ( tickets > maxTickets ){
-            alert("You cannot buy more than " + maxTickets + " tickets");
+            toast.error("You cannot buy more than " + maxTickets + " tickets");
             return;
         } else {
             const amount = tickets * ticketPrice;
-            const sendTX = new ethers.Contract(erc20address, erc20abi, signer);
-            sendTX.approve(lotteryaddress, amount).then((tx) => {
-                console.log("tx", tx);
-                lotteryContract.buyTickets(0, tickets).then((tx) => {
-                    console.log("tx", tx);
-                });
+           if (localStorage.getItem('connectedWallet') === 'metamask') {
+               Metamaskbuy(amount);
+           } else if (localStorage.getItem('connectedWallet') === 'wc'){
+                WalletConnectbuy(amount);
+              }
+              else if (localStorage.getItem('connectedWallet') === 'bk'){
+                Bitkeepbuy(amount);
+              }
+        }
+    }   
+    }
+
+   const Metamaskbuy = async (amount) => {
+        const amountInWei = ethers.utils.parseEther(amount.toString());
+        const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
+        const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
+ 
+        try{
+            toast.info("Please wait while the transaction is being processed", {
+                timeout: 10000,
             });
+            var tx = await lotteryContract.buyTicket(tickets);
+            var txn = await tx.wait();
+            if (txn.status === 1) {
+                toast.success("Transaction successful");
+                window.location.reload(false);
+            }
+        } catch (error) {
+            const message = error.reason;
+            if (message === "execution reverted: token balance or allowance is lower than amount requested") {
+                approveToken(amountInWei);
+            }
         }
     }
 
+    const WalletConnectbuy = async (amount) => { 
+       const amountInWei = ethers.utils.parseEther(amount.toString());
+       toast.info("Please wait while the transaction is being processed");
+       const connector = new WalletConnect({
+        bridge: "https://bridge.walletconnect.org",
+        qrcodeModal: QRCodeModal,
+        provider: new Web3.providers.HttpProvider(rpcUrl),
+        });
+        if (!connector.connected) {
+            await connector.createSession();
+            connector.on("connect", (error, payload) => {
+            if (error) {
+                throw error;
+            }
+            });
+            }
+        // send contract call to walletconnect
+        const tx = await connector.sendTransaction({
+            from: connector.accounts[0],
+            data: lotteryContract.interface.encodeFunctionData("buyTicket", [tickets]),
+        });
+        const txn = await tx.wait();
+        if (txn.status === 1) {
+            toast.success("Transaction successful");
+            window.location.reload(false);
+        }
+        else {
+           approveToken(amountInWei);
+        }
+    }
+        
+    
+    const Bitkeepbuy = async (amount) =>{
+       const amountInWei = ethers.utils.parseEther(amount.toString());
+       const provider = window.bitkeep && window.bitkeep.ethereum;
+         const signer = new ethers.providers.Web3Provider(provider).getSigner();
+            const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
+            const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
+            try{
+                toast.info("Please wait while the transaction is being processed")
+                var tx = await lotteryContract.buyTicket(tickets);
+                var txn = await tx.wait();
+                if (txn.status === 1) {
+                    toast.success("Transaction successful");
+                    window.location.reload(false);
+                }
+            } catch (error) {
+                const message = error.reason;
+                if (message === "execution reverted: token balance or allowance is lower than amount requested") {
+                    approveToken(amountInWei);
+                }
+            }
+    }
+    
+   const approveToken = async (amountInWei) => {
+        toast.info("Approving token");
+        if (localStorage.getItem('connectedWallet') === 'metamask') {
+        const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
+        try {
+            var tx = await tokenContract.approve(lotteryaddress, amountInWei);
+            var txn = await tx.wait();
+            if (txn.status === 1) {
+                toast.success("Token approved");
+                Metamaskbuy(amountInWei / 1000000000000000000);
+            }
+        } catch (error) {
+            toast.error("Transaction failed");
+        }
+    } else if (localStorage.getItem('connectedWallet') === 'wc'){
+        const connector = new WalletConnect({
+            bridge: "https://bridge.walletconnect.org",
+            qrcodeModal: QRCodeModal,
+            });
+            if (!connector.connected) {
+                await connector.createSession();
+                connector.on("connect", (error, payload) => {
+                if (error) {
+                    throw error;
+                }
+                });
+                }
+            // draft token approve transaction
+            const tx = {
+                from: connector.accounts[0],
+                to: erc20address,
+                value: 0,
+                data: tokenContract.interface.encodeFunctionData("approve", [lotteryaddress, amountInWei]),
+            };
+            // sign transaction
+            const signedTx = await connector.signTransaction(tx);
+            // send signed transaction
+            const txHash = await connector.sendTransaction(signedTx);
+            // wait for transaction to be mined
+            const receipt = await connector.waitForTransaction(txHash);
+            if (receipt.status === 1) {
+                toast.success("Token approved");
+                WalletConnectbuy(amountInWei / 1000000000000000000);
+            }
+      }
+        else if (localStorage.getItem('connectedWallet') === 'bk'){
+        
+           const provider = window.bitkeep && window.bitkeep.ethereum;
+              const signer = new ethers.providers.Web3Provider(provider).getSigner();
+                const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
+                try {
+                    var tx = await tokenContract.approve(lotteryaddress, amountInWei);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
+                        toast.success("Token approved");
+                        Bitkeepbuy(amountInWei / 1000000000000000000);
+                    }
+                } catch (error) {
+                    toast.error(error);
+                    alert(error);
+                }
+        }
+   }
+
+
+
     return (
+        
         <div className='buy-form-container theme-bg'>
             <div className='buy-box'>
+            <ToastContainer />
                 <h3 className="buy-title">LOTTERY #1</h3>
                 <p>Number of Tickets decide the probability of you winning the lottery. The more tickets you buy the more chances of you winning the Lottery.</p>
                 <div className='lottery-progress'>

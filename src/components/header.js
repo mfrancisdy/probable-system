@@ -73,7 +73,6 @@ export default function Header() {
                 alert("Please Download Metemask Extension for Chrome")
             }
         }else if(wallet === 'wc'){
-            
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
                 qrcodeModal: QRCodeModal,
@@ -85,14 +84,29 @@ export default function Header() {
                     if (error) {
                         throw error;
                     }
+                    
+                    const { accounts, chainId } = payload.params[0];
+                    if (chainId !== 80001) {
+                        connector.sendCustomRequest({
+                            method: "wallet_switchEthereumChain",
+                            params: [{ chainId: Web3.utils.toHex(80001) }],
+                        });
+                    }
                     localStorage.setItem('connectedWallet', 'wc');
                     setWalletConnected(true);
                     closeWalletPopup();
                 });
             } else {
-                connector.on("connect", (error, payload) => {
+                    connector.on("connect", (error, payload) => {
                     if (error) {
                         throw error;
+                    }
+                    const { accounts, chainId } = payload.params[0];
+                    if (chainId !== 80001) {
+                        connector.sendCustomRequest({
+                            method: "wallet_switchEthereumChain",
+                            params: [{ chainId: Web3.utils.toHex(80001) }],
+                        });
                     }
                     localStorage.setItem('connectedWallet', 'wc');
                     setWalletConnected(true);
@@ -146,6 +160,11 @@ export default function Header() {
     }
 
     function disconnectWallet(){
+        const connector = new WalletConnect({
+            bridge: "https://bridge.walletconnect.org",
+            qrcodeModal: QRCodeModal,
+        });
+        connector.killSession();
         localStorage.removeItem('connectedWallet');
         setWalletConnected(false);
     }
@@ -195,7 +214,7 @@ export default function Header() {
                     <Col xs={6} sm={6} md={6} className='border-bottom wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
                     </Col>
-                    <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('tp')}}>
+                    <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Tp} alt='tokenpocket' className='walletpopup-img'/>
                     </Col>
                     <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
