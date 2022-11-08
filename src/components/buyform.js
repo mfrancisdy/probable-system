@@ -15,6 +15,8 @@ export default function BuyForm() {
     const [ ticketPrice, setTicketPrice ] = useState(0);
     const [ tickets, setTickets ] = useState(0);
     const [ totalAmount, setTotalAmount ] = useState(0);
+    const [ ticketsSold, setTicketsSold ] = useState(0);
+    const [ soldPercentage, setSoldPercentage ] = useState(0);
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
     const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
@@ -27,6 +29,9 @@ export default function BuyForm() {
         const poolDetails = await lotteryContract.pools(0);
         setMaxTickets(poolDetails[2].toString());
         setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
+        const poolSize = await lotteryContract.getCurrentPoolSize();
+        setTicketsSold(poolSize.toNumber());
+        setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
     }
 
     function calculateTickets(e) {
@@ -68,7 +73,7 @@ export default function BuyForm() {
                 <p>Number of Tickets decide the probability of you winning the lottery. The more tickets you buy the more chances of you winning the Lottery.</p>
                 <div className='lottery-progress'>
                     <ProgressBar 
-                    completed={50} 
+                    completed={soldPercentage}
                     bgColor="#8E71EA" 
                     height="21px" 
                     width="100%" 
