@@ -6,8 +6,16 @@ import BuyForm from '../../components/buyform';
 import WinnerList from '../../components/winnerlist';
 import Chart from '../../assets/Images/chart.png';
 import Users from '../../assets/Images/users.png';
+import MetaMask from '../../assets/Images/meta.png';
+import Wc from '../../assets/Images/wc.png';
+import Tp from '../../assets/Images/tp.png';
+import Bk from '../../assets/Images/bk.png';
 
 export default function Home() {
+
+    const closeWalletPopup = () => {
+        document.querySelector('.walletpopup-container').classList.remove('show');
+    }
     
     return(
         <>
@@ -122,6 +130,30 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
+        <div className='walletpopup-container'>
+            <div className='walletpopup'>
+                <div className='walletpopup-head'>
+                    <h3 className='text-center'>Connect Wallet</h3>
+                    <button className='walletpopup-close' onClick={closeWalletPopup}>X</button>
+                </div>
+                <div className='walletpopup-body'>
+                    <Row>
+                        <Col md={6} className='border-right border-bottom'>
+                            <img src={MetaMask} alt='metamask' className='walletpopup-img'/>
+                        </Col>
+                        <Col md={6} className='border-bottom'>
+                            <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
+                        </Col>
+                        <Col md={6} className='border-right d-flex align-items-center'>
+                            <img src={Tp} alt='tokepocket' className='walletpopup-img'/>
+                        </Col>
+                        <Col md={6}>
+                            <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
+                        </Col>
+                    </Row>
+                </div>
+            </div>
+        </div>
         </>
     )
 }

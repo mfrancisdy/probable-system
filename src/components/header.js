@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 
 export default function Header() {
@@ -14,8 +13,8 @@ export default function Header() {
         }
     }
 
-    function activeMenu(val){
-
+    function selectWallet(){
+        document.querySelector('.walletpopup-container').classList.add('show');
     }
 
 
@@ -32,14 +31,14 @@ export default function Header() {
                             <Row>
                                 <Col md={8}>
                                 <Nav className="nav-menu justify-content-center">
-                                    <Nav.Link id='item0' href="/" className='px-3' onClick={()=>activeMenu(0)}>Home</Nav.Link>
-                                    <Nav.Link id='item1' href="#rewards" className='px-3' onClick={()=>activeMenu(1)}>Rewards</Nav.Link>
-                                    <Nav.Link id='item2' href="#winners" className='px-3' onClick={()=>activeMenu(2)}>Winners</Nav.Link>
-                                    <Nav.Link id='item3' href="#lottery" className='px-3' onClick={()=>activeMenu(3)}>Lottery</Nav.Link>
+                                    <Nav.Link id='item0' href="/" className='px-3'>Home</Nav.Link>
+                                    <Nav.Link id='item1' href="#rewards" className='px-3'>Rewards</Nav.Link>
+                                    <Nav.Link id='item2' href="#winners" className='px-3'>Winners</Nav.Link>
+                                    <Nav.Link id='item3' href="#lottery" className='px-3'>Lottery</Nav.Link>
                                 </Nav>
                                 </Col>
                                 <Col md={4} className='d-flex justify-sm-none'>
-                                <ConnectButton className='connectBtn' />
+                                <button className='connectBtn' onClick={()=>selectWallet()}>Connect Wallet</button>
                                 </Col>
                             </Row>
                         </Container>
