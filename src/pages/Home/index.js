@@ -10,11 +10,89 @@ import MetaMask from '../../assets/Images/meta.png';
 import Wc from '../../assets/Images/wc.png';
 import Tp from '../../assets/Images/tp.png';
 import Bk from '../../assets/Images/bk.png';
+import Web3 from 'web3';
+import WalletConnect from "@walletconnect/client";
+import QRCodeModal from "@walletconnect/qrcode-modal";
 
 export default function Home() {
 
     const closeWalletPopup = () => {
         document.querySelector('.walletpopup-container').classList.remove('show');
+    }
+
+    const connectWallet = async (wallet) => {
+        if(wallet === 'metamask'){
+            if (window.ethereum) {
+                try {
+                    const connect = await window.ethereum.request({
+                        method: "eth_requestAccounts",
+                    });
+                    const chainId = 80001
+                    if (window.ethereum.networkVersion !== chainId) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: Web3.utils.toHex(chainId) }]
+                            });
+                        } catch (err) {
+                            // This error code indicates that the chain has not been added to MetaMask
+                            if (err.code === 4902) {
+                                await window.ethereum.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            chainName: 'Polygon Mainnet',
+                                            chainId: Web3.utils.toHex(chainId),
+                                            nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+                                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                        }
+                                    ]
+                                });
+                            }
+                         }
+                        }
+                    localStorage.setItem('connectedWallet', 'metamask');
+                    closeWalletPopup();
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                alert("Please Download Metemask Extension for Chrome")
+            }
+        }else if(wallet === 'wc'){
+            
+            const connector = new WalletConnect({
+                bridge: "https://bridge.walletconnect.org",
+                qrcodeModal: QRCodeModal,
+            });
+            if (!connector.connected) {
+                // create new session
+                connector.createSession();
+                connector.on("connect", (error, payload) => {
+                    if (error) {
+                        throw error;
+                    }
+                    localStorage.setItem('connectedWallet', 'metamask');
+                    closeWalletPopup();
+                });
+            } else {
+                connector.on("connect", (error, payload) => {
+                    if (error) {
+                        throw error;
+                    }
+                    localStorage.setItem('connectedWallet', 'wc');
+                    closeWalletPopup();
+                });
+    
+            }
+        }else if(wallet === 'tp'){
+            
+            closeWalletPopup();
+        }else if(wallet === 'bk'){
+           
+            closeWalletPopup();
+        }
+        
     }
     
     return(
@@ -138,16 +216,16 @@ export default function Home() {
                 </div>
                 <div className='walletpopup-body'>
                     <Row>
-                        <Col md={6} className='border-right border-bottom'>
+                        <Col xs={6} sm={6} md={6} className='border-right border-bottom wallet-btn' onClick={()=>{connectWallet('metamask')}}>
                             <img src={MetaMask} alt='metamask' className='walletpopup-img'/>
                         </Col>
-                        <Col md={6} className='border-bottom'>
+                        <Col xs={6} sm={6} md={6} className='border-bottom wallet-btn' onClick={()=>{connectWallet('wc')}}>
                             <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
                         </Col>
-                        <Col md={6} className='border-right d-flex align-items-center'>
-                            <img src={Tp} alt='tokepocket' className='walletpopup-img'/>
+                        <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('tp')}}>
+                            <img src={Tp} alt='tokenpocket' className='walletpopup-img'/>
                         </Col>
-                        <Col md={6}>
+                        <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
                             <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
                         </Col>
                     </Row>

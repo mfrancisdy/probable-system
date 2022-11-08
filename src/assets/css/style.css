@@ -442,9 +442,9 @@ ul.social-icons {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    position: relative;
     visibility: hidden;
     opacity: 0;
+    padding: 0 20px;
 }
 
 .show{
@@ -462,8 +462,8 @@ ul.social-icons {
 
 .walletpopup-close {
     position: absolute;
-    right: 16px;
-    top: 11px;
+    right: -15px;
+    top: -24px;
     background: transparent;
     border: none;
     font-size: 20px;
@@ -476,6 +476,14 @@ ul.social-icons {
 
 .border-right.col-md-6 {
     border-right: 1px solid #dee2e6;
+}
+
+.walletpopup-head {
+    position: relative;
+}
+
+.wallet-btn{
+    cursor: pointer;
 }
 
 /* Meadia Query */
@@ -492,6 +500,15 @@ ul.social-icons {
     }
     .total-txt {
         font-size: 11px !important;
+    }
+    .walletpopup {
+        width: 100%;
+    }
+    .justify-sm-none {
+        justify-content: unset !important;
+    }
+    .connectBtn {
+        margin-left: 0px;
     }
 }
 
@@ -541,6 +558,12 @@ ul.social-icons {
     .d-winners {
         padding: 3rem 1rem !important;
     }
+    .walletpopup {
+        width: 100%;
+    }
+    .connectBtn {
+        margin-left: 0px;
+    }
 }
 
 @media (min-width: 541px) and (max-width: 768px){
@@ -577,6 +600,12 @@ ul.social-icons {
     }
     .cpy{
         text-align: center;
+    }
+    .walletpopup {
+        width: 100%;
+    }
+    .connectBtn {
+        margin-left: 0px;
     }
 }
 
