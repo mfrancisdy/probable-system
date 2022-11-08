@@ -435,6 +435,7 @@ ul.social-icons {
 .walletpopup-container {
     background: #00000063;
     height: 100vh;
+    width:100%;
     position: fixed;
     top: 0;
     transition: all 1s ease;
@@ -455,7 +456,7 @@ ul.social-icons {
 .walletpopup {
     width: 50%;
     background: #fff;
-    height: 448px;
+    height: auto;
     border-radius: 12px;
     padding: 40px;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Scroll1img from '../../assets/Images/scroll1win.png';
 import Scroll3img from '../../assets/Images/lottery.png';
@@ -19,6 +19,8 @@ export default function Home() {
     const closeWalletPopup = () => {
         document.querySelector('.walletpopup-container').classList.remove('show');
     }
+
+    const [walletConnected, setWalletConnected] = useState(false);
 
     const connectWallet = async (wallet) => {
         if(wallet === 'metamask'){
@@ -52,6 +54,7 @@ export default function Home() {
                          }
                         }
                     localStorage.setItem('connectedWallet', 'metamask');
+                    setWalletConnected(true);
                     closeWalletPopup();
                 } catch (err) {
                     console.log(err)
@@ -86,11 +89,17 @@ export default function Home() {
     
             }
         }else if(wallet === 'tp'){
-            
             closeWalletPopup();
         }else if(wallet === 'bk'){
-           
-            closeWalletPopup();
+            
+            const provider = window.bitkeep && window.bitkeep.ethereum;
+            console.log(provider)
+            if (!provider) {
+                window.open('https://bitkeep.com/en/download?type=2');
+                throw "Please go to our official website to download!!"
+            } else {
+
+            }
         }
         
     }
