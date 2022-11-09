@@ -116,7 +116,6 @@ export default function BuyForm() {
         provider: new Web3.providers.HttpProvider(rpcUrl),
         });
         if (!connector.connected) {
-            await connector.createSession();
             connector.on("connect", (error, payload) => {
             if (error) {
                 throw error;
@@ -135,14 +134,25 @@ export default function BuyForm() {
         const tokenContract = new ethers.Contract(erc20address, erc20abi, wcSigner);
         const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, wcSigner);
         try{
-            var tx = await lotteryContract.buyTicket(tickets);
+            toast.info("Approving token");
+            var tx = await tokenContract.approve(lotteryaddress, amountInWei);
             var txn = await tx.wait();
             if (txn.status === 1) {
-                toast.success("Transaction successful");
-                window.location.reload(false);
+                toast.success("Token approved");
+                toast.info("Please wait while the transaction is being processed");
+                var tx = await lotteryContract.buyTicket(tickets);
+                var txn = await tx.wait();
+                if (txn.status === 1) {
+                    toast.success("Transaction successful");
+                    window.location.reload(false);
+                }
+            }else{
+                toast.error("Transaction failed");
             }
+           
         }
         catch (error) {
+            console.log(error);
             const message = error.reason;
             if (message === "execution reverted: token balance or allowance is lower than amount requested") {
                 approveToken(amountInWei);
