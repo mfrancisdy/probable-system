@@ -369,6 +369,7 @@ section.scroll1 {
 
 .d-winners{
     border-radius: 18px;
+    padding: 0 30px;
 }
 
 .d-winners>div:nth-child(n+1)>h5 {

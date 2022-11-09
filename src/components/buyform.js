@@ -34,7 +34,7 @@ export default function BuyForm() {
 
     const getPoolInfo = async () => {
         const poolDetails = await lotteryContract.pools(0);
-        setMaxTickets(poolDetails[2].toString());
+        setMaxTickets(poolDetails[2].toNumber());
         setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
@@ -51,6 +51,10 @@ export default function BuyForm() {
             setTickets(noOfTickets);
             setTotalAmount(noOfTickets * ticketPrice);
         }
+    }
+
+    function handleChange(e) {
+        setTickets(e.target.value);
     }
 
 
@@ -132,7 +136,6 @@ export default function BuyForm() {
            approveToken(amountInWei);
         }
     }
-        
     
     const Bitkeepbuy = async (amount) =>{
        const amountInWei = ethers.utils.parseEther(amount.toString());
@@ -241,13 +244,13 @@ export default function BuyForm() {
                     />
                     <div className='lottery-progress-text'>
                         <p>Pool Filled</p>
-                        <p style={{color:"#8E71EA"}}>0 %</p>
+                        <p style={{color:"#8E71EA"}}>{soldPercentage} %</p>
                     </div>
                 </div>
                 <div className='buy-form'>
                     <h3 className="form-title">Enter Tickets</h3>
                     <form onSubmit={(e)=>buyTicket(e)}>
-                        <input className="form-control buy-form-i my-3" type="number" min={1} onChange={(e)=>{setTickets(e.target.value)}} value={tickets} placeholder="Enter Total Number of Tickets To Buy" />
+                        <input className="form-control buy-form-i my-3" type="number" min={1} onChange={handleChange} value={tickets} placeholder="Enter Total Number of Tickets To Buy" />
                         <Row>
                             <Col md={12}>
                                 <button type="button" className="ticketVal-btn" onClick={()=>{calculateTickets(5)}}>5 Tickets</button>

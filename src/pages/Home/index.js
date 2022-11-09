@@ -84,7 +84,7 @@ export default function Home() {
                         <p className='text-dark text-center py-5'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
                     </Col>
                 </Row>
-                <Row className='scroll4-row'>
+                <Row className='scroll4-row px-2'>
                     <Col md={12}>
                         <WinnerList />
                     </Col>
@@ -106,7 +106,7 @@ export default function Home() {
         </section>
         <section className='scroll6'>
             <Container>
-                <Row className='theme-bg py-5 px-5 m-0 d-winners'>
+                <Row className='theme-bg py-5 m-0 d-winners'>
                     <Col md={6}>
                         <h5>get a chance to win!</h5>
                         <h2 className='text-white py-3'>Daily Winners</h2>
