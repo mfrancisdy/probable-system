@@ -55,7 +55,7 @@ export default function BuyForm() {
     }
 
     function handleChange(e) {
-        setTickets(e.target.value);
+        calculateTickets(e.target.value);
     }
 
 

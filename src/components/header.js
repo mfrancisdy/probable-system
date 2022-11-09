@@ -91,7 +91,6 @@ export default function Header() {
                                 params: [{ chainId: Web3.utils.toHex(8001) }]
                             });
                         } catch (err) {
-                            console.log(err)
                             // This error code indicates that the chain has not been added to MetaMask
                             if (err.code === 4902) {
                                 connector.sendCustomRequest({
