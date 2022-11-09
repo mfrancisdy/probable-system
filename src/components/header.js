@@ -83,14 +83,30 @@ export default function Header() {
                 connector.on("connect", (error, payload) => {
                     if (error) {
                         throw error;
-                    }
-                    
-                    const { accounts, chainId } = payload.params[0];
-                    if (chainId !== 80001) {
-                        connector.sendCustomRequest({
-                            method: "wallet_switchEthereumChain",
-                            params: [{ chainId: Web3.utils.toHex(80001) }],
-                        });
+                    }                    
+                    if( connector._chainId !== 8001){
+                        try{
+                            connector.sendCustomRequest({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: Web3.utils.toHex(8001) }]
+                            });
+                        } catch (err) {
+                            console.log(err)
+                            // This error code indicates that the chain has not been added to MetaMask
+                            if (err.code === 4902) {
+                                connector.sendCustomRequest({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            chainName: 'Polygon Testnet',
+                                            chainId: Web3.utils.toHex(8001),
+                                            nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+                                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                        }
+                                    ]
+                                });
+                            }
+                         }
                     }
                     localStorage.setItem('connectedWallet', 'wc');
                     setWalletConnected(true);
@@ -102,12 +118,30 @@ export default function Header() {
                         throw error;
                     }
                     const { accounts, chainId } = payload.params[0];
-                    if (chainId !== 80001) {
-                        connector.sendCustomRequest({
-                            method: "wallet_switchEthereumChain",
-                            params: [{ chainId: Web3.utils.toHex(80001) }],
-                        });
+                    if (chainId !== 8001) {
+                        try{
+                            connector.sendCustomRequest({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: Web3.utils.toHex(8001) }]
+                            });
+                        } catch (err) {
+                            // This error code indicates that the chain has not been added to MetaMask
+                            if (err.code === 4902) {
+                                connector.sendCustomRequest({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            chainName: 'Polygon Testnet',
+                                            chainId: Web3.utils.toHex(8001),
+                                            nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+                                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                        }
+                                    ]
+                                });
+                            }
+                            }
                     }
+
                     localStorage.setItem('connectedWallet', 'wc');
                     setWalletConnected(true);
                     closeWalletPopup();

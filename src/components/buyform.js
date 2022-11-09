@@ -7,6 +7,7 @@ import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 import { erc20address, erc20abi } from "./abis/erc20";
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from 'web3';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -122,19 +123,32 @@ export default function BuyForm() {
             }
             });
             }
-        // send contract call to walletconnect
-        const tx = await connector.sendTransaction({
-            from: connector.accounts[0],
-            data: lotteryContract.interface.encodeFunctionData("buyTicket", [tickets]),
+        const wcProvider = new WalletConnectProvider({
+            infuraId: "23496caecbbf436fb0a618b8129f6430",
+            rpc: {
+            8001: rpcUrl,
+            },
+            connector,
         });
-        const txn = await tx.wait();
-        if (txn.status === 1) {
-            toast.success("Transaction successful");
-            window.location.reload(false);
+        wcProvider.enable();
+        const wcSigner = new ethers.providers.Web3Provider(wcProvider).getSigner();
+        const tokenContract = new ethers.Contract(erc20address, erc20abi, wcSigner);
+        const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, wcSigner);
+        try{
+            var tx = await lotteryContract.buyTicket(tickets);
+            var txn = await tx.wait();
+            if (txn.status === 1) {
+                toast.success("Transaction successful");
+                window.location.reload(false);
+            }
         }
-        else {
-           approveToken(amountInWei);
+        catch (error) {
+            const message = error.reason;
+            if (message === "execution reverted: token balance or allowance is lower than amount requested") {
+                approveToken(amountInWei);
+            }
         }
+        
     }
     
     const Bitkeepbuy = async (amount) =>{
