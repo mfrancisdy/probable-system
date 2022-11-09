@@ -189,6 +189,7 @@ export default function BuyForm() {
                 Metamaskbuy(amountInWei / 1000000000000000000);
             }
         } catch (error) {
+            console.log(error);
             toast.error("Transaction failed");
         }
     } else if (localStorage.getItem('connectedWallet') === 'wc'){
