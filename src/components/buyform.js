@@ -180,6 +180,7 @@ export default function BuyForm() {
    const approveToken = async (amountInWei) => {
         toast.info("Approving token");
         if (localStorage.getItem('connectedWallet') === 'metamask') {
+        const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();    
         const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
         try {
             var tx = await tokenContract.approve(lotteryaddress, amountInWei);
@@ -189,7 +190,6 @@ export default function BuyForm() {
                 Metamaskbuy(amountInWei / 1000000000000000000);
             }
         } catch (error) {
-            console.log(error);
             toast.error("Transaction failed");
         }
     } else if (localStorage.getItem('connectedWallet') === 'wc'){
