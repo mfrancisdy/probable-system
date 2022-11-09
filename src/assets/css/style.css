@@ -503,6 +503,15 @@ ul.social-icons {
     cursor: pointer;
 }
 
+select.gtranslate {
+    position: fixed;
+    bottom: 0;
+    right: 51px;
+    height: 42px;
+    cursor: pointer;
+}
+
+
 /* Meadia Query */
 
 @media (max-width: 340px){
