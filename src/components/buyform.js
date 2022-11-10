@@ -72,10 +72,11 @@ export default function BuyForm() {
             return;
         } else {
             const amount = tickets * ticketPrice;
+            const amountInWei = ethers.utils.parseEther(amount.toString());
            if (localStorage.getItem('connectedWallet') === 'metamask') {
                Metamaskbuy(amount);
            } else if (localStorage.getItem('connectedWallet') === 'wc'){
-                approveToken(amount);
+                approveToken(amountInWei);
               }
               else if (localStorage.getItem('connectedWallet') === 'bk'){
                 Bitkeepbuy(amount);
