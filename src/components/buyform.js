@@ -75,7 +75,7 @@ export default function BuyForm() {
            if (localStorage.getItem('connectedWallet') === 'metamask') {
                Metamaskbuy(amount);
            } else if (localStorage.getItem('connectedWallet') === 'wc'){
-                WalletConnectbuy(amount);
+                approveToken(amount);
               }
               else if (localStorage.getItem('connectedWallet') === 'bk'){
                 Bitkeepbuy(amount);
@@ -111,14 +111,12 @@ export default function BuyForm() {
         }
     }
 
-    const WalletConnectbuy = async (amount) => { 
-       const amountInWei = ethers.utils.parseEther(amount.toString());
+    const WalletConnectbuy = async () => { 
        toast.info("Please wait while the transaction is being processed");
        const connector = new WalletConnect({
         bridge: "https://bridge.walletconnect.org",
         qrcodeModal: QRCodeModal,
         });
-        // fetch provider from walletconnect
         const provider = new WalletConnectProvider({
         infuraId: "23496caecbbf436fb0a618b8129f6430",
         chainId: 80001,
@@ -130,7 +128,6 @@ export default function BuyForm() {
          provider.enable().then(async () => {
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
             console.log(signer);
-            const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
             const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
             try{
                 var tx = await lotteryContract.buyTicket(tickets);
@@ -139,16 +136,8 @@ export default function BuyForm() {
                     toast.success("Transaction successful");
                     window.location.reload(false);
                 }
-                
-               
             } catch (error) {
-                const message = error.reason;
-                if (message === "execution reverted: token balance or allowance is lower than amount requested") {
-                    approveToken(amountInWei);
-                }
-                else {
-                    toast.error(message);
-                }
+                toast.error(error.reason);
             }
          });
 
@@ -216,7 +205,7 @@ export default function BuyForm() {
                         var tx = await tokenContract.methods.approve(lotteryaddress, amountInWei.toString()).send({from:address});
                         if (tx.status === true) {
                             toast.success("Token approved");
-                            WalletConnectbuy(amountInWei / 1000000000000000000);
+                            WalletConnectbuy();
                         }
                     }
                     catch (error) {
