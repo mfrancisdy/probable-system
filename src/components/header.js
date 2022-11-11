@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import MetaMask from '../assets/Images/meta.png';
 import Wc from '../assets/Images/wc.png';
@@ -12,7 +12,7 @@ window.Buffer = require('buffer/').Buffer;
 
 
 export default function Header() {
-
+    
     window.onscroll = function() {scrollFunction()};
     function scrollFunction() {
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
@@ -31,7 +31,11 @@ export default function Header() {
     }
 
     const [walletConnected, setWalletConnected] = useState(false);
-
+    useEffect(() => {
+    if (localStorage.getItem('connectedWallet')) {
+        setWalletConnected(true);
+    }
+    }, []);
     const connectWallet = async (wallet) => {
         if(wallet === 'metamask'){
             if (window.ethereum) {

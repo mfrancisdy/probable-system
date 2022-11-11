@@ -7,6 +7,7 @@ import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 import { erc20address, erc20abi } from "./abis/erc20";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "../assets/css/style.css";
 
 
 export default function WinnerList() {
@@ -55,7 +56,7 @@ export default function WinnerList() {
                             <Col md={4} className='d-flex align-items-center'>
                                 <img src={Img1} className='winnerImg' alt='img1' />
                                 <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
-                                    {item.address}
+                                   <a className='link' href={` https://mumbai.polygonscan.com/address/${item.address}`} target="_blank">{item.address}</a> 
                                 </div>
                             </Col>
                             <Col md={4} className='d-flex align-items-center justify-content-center'>
