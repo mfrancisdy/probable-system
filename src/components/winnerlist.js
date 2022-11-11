@@ -16,15 +16,22 @@ export default function WinnerList() {
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
     const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
-    const [ winnerData, setWinnerData] = useState(0);
+    const [ WinnerData, setWinnerData] = useState([{
+        address: '',
+        poolid: '',
+    }]);
 
     useEffect(() => {
         getwinnerData();
     }, []);
 
     const getwinnerData = async () => {
-        const winnerData = await lotteryContract.poolWinners();
-        setWinnerData(winnerData);
+        const poolid = await lotteryContract.getCurrentPoolIndex()
+        for(let i = 0; i < poolid; i++){
+            const winner = await lotteryContract.getAnyPoolWinners(i);
+            setWinnerData(WinnerData => [...WinnerData, { address: winner[0], poolid: i}]);
+        } 
+        setWinnerData(WinnerData => WinnerData.slice(1));                    
     }
 
     return(
@@ -40,34 +47,26 @@ export default function WinnerList() {
                     <h4 className="text-white">Amount Won($TOKENS)</h4>
                 </Col>
             </Row>
-            <Row className='winner-list-body my-2 text-center winner-bg1 py-3 px-3'>
-                <Col md={4} className='d-flex align-items-center'>
-                    <img src={Img1} className='winnerImg' alt='img1' />
-                    <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
-                       
-                    </div>
-                </Col>
-                <Col md={4} className='d-flex align-items-center justify-content-center'>
-                    <p>#1</p>
-                </Col>
-                <Col md={4} className='d-flex align-items-center justify-content-center'>
-                    <p></p>
-                </Col>
-            </Row>
-            <Row className='winner-list-body my-2 text-center winner-bg2 py-3 px-3'>
-                <Col md={4} className='d-flex align-items-center'>
-                    <img src={Img1} className='winnerImg' alt='img1' />
-                    <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
-                    
-                    </div>
-                </Col>
-                <Col md={4} className='d-flex align-items-center justify-content-center'>
-                    <p>#2</p>
-                </Col>
-                <Col md={4} className='d-flex align-items-center justify-content-center'>
-                    <p></p>
-                </Col>
-            </Row>
+            {
+                WinnerData && WinnerData.map((item, index) => {
+                    return(
+                        <Row key={index} className={index % 2 != 0 ? 'winner-list-body my-2 text-center winner-bg1 py-3 px-3' :
+                        'winner-list-body my-2 text-center winner-bg2 py-3 px-3'}>
+                            <Col md={4} className='d-flex align-items-center'>
+                                <img src={Img1} className='winnerImg' alt='img1' />
+                                <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
+                                    {item.address}
+                                </div>
+                            </Col>
+                            <Col md={4} className='d-flex align-items-center justify-content-center'>
+                                <p>#{item.poolid}</p>
+                            </Col>
+                            <Col md={4} className='d-flex align-items-center justify-content-center'>
+                                <p></p>
+                            </Col>
+                        </Row>
+                    )
+            })}
         </>
     )
 }

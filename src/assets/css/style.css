@@ -511,6 +511,11 @@ select.gtranslate {
     cursor: pointer;
 }
 
+.scroll4-row {
+    height: 620px;
+    overflow-y: scroll;
+}
+
 
 /* Meadia Query */
 

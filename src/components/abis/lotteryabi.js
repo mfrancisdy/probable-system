@@ -1,4 +1,4 @@
-export const lotteryaddress = "0xA4bC6b7d1B0A43d37Bd37a44b7374BCd749AB6F3";
+export const lotteryaddress = "0x91fe3dad980AAd57CeE10d6D9c7236868a4A7Ce4";
 export const rpcUrl = "https://matic-mumbai.chainstacklabs.com";
 export const lotteryabi = [
 	{
@@ -71,6 +71,38 @@ export const lotteryabi = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_poolId",
+				"type": "uint256"
+			}
+		],
+		"name": "getAnyPoolWinners",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCurrentPoolIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "getCurrentPoolSize",
 		"outputs": [
@@ -78,6 +110,71 @@ export const lotteryabi = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolMaxTickets",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolSize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolTicketPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolTicketToken",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolWinners",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
 			}
 		],
 		"stateMutability": "view",
@@ -220,6 +317,32 @@ export const lotteryabi = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "royaltyAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "royaltyPercent",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -228,6 +351,32 @@ export const lotteryabi = [
 			}
 		],
 		"name": "setMaxTickets",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_royaltyAddress",
+				"type": "address"
+			}
+		],
+		"name": "setRoyaltyAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_royaltyPercent",
+				"type": "uint256"
+			}
+		],
+		"name": "setRoyaltyPercent",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
