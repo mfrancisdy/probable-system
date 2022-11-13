@@ -8,8 +8,9 @@ import { erc20address, erc20abi } from "./abis/erc20";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../assets/css/style.css";
+import { randpix, RandpixColorScheme, Symmetry } from 'randpix'
 
-
+window.Buffer = require('buffer/').Buffer;
 export default function WinnerList() {
 
     const { data: signer } = useSigner()
@@ -20,7 +21,11 @@ export default function WinnerList() {
     const [ WinnerData, setWinnerData] = useState([{
         address: '',
         poolid: '',
+        img: '',
+        serialnumber: '',
+        amount: '',
     }]);
+    const [ tokenName, setTokenName] = useState('');
 
     useEffect(() => {
         getwinnerData();
@@ -28,12 +33,40 @@ export default function WinnerList() {
 
     const getwinnerData = async () => {
         const poolid = await lotteryContract.getCurrentPoolIndex()
-        for(let i = 0; i < poolid; i++){
-            const winner = await lotteryContract.getAnyPoolWinners(i);
-            setWinnerData(WinnerData => [...WinnerData, { address: winner[0], poolid: i}]);
-        } 
-        setWinnerData(WinnerData => WinnerData.slice(1));                    
+        const tokenSymbol = await tokenContract.symbol();
+        setTokenName(tokenSymbol);
+        const generate = randpix({
+            colorScheme: RandpixColorScheme.NEUTRAL, // Color theme (default: NEUTRAL)
+            size: 8, // Art size. Recommended 7 or 8 (odd/even symmetry) (default: 8)
+            scale: 32, // Pixel scale (default: 1)
+            symmetry: Symmetry.VERTICAL, // Symmetry (default: VERTICAL)
+            grayscaleBias: false, // Change only the brightness of the color instead of the hue (default: undefined)
+            seed: poolid
+        });
+        for(let i = poolid - 1; i >=0; i--){
+            for(let j = 0; j < 9; j++){
+                const winner = await lotteryContract.getAnyPoolWinners(i);
+                const winnerAddress = winner[j];
+                const amount = await lotteryContract.poolWinnersAmounts(winnerAddress, i);
+                const winneramount = amount.toString();
+                const art = generate();
+                const pix = art.toDataURL();
+                const serialnumber = ((i+1) * 9) - j;
+                setWinnerData(WinnerData => [...WinnerData, {
+                    address: winnerAddress,
+                    poolid: i,
+                    img: pix,
+                    serialnumber: serialnumber,
+                    amount: winneramount,
+                }]);
+            }
+            
+        }
+        setWinnerData(WinnerData => WinnerData.slice(1)); 
+                          
     }
+    
+   
 
     return(
         <>
@@ -45,7 +78,7 @@ export default function WinnerList() {
                     <h4 className="text-white">Serial Number</h4>
                 </Col>
                 <Col md={4}>
-                    <h4 className="text-white">Amount Won($TOKENS)</h4>
+                    <h4 className="text-white">Amount Won ${tokenName}</h4>
                 </Col>
             </Row>
             {
@@ -54,16 +87,16 @@ export default function WinnerList() {
                         <Row key={index} className={index % 2 != 0 ? 'winner-list-body my-2 text-center winner-bg1 py-3 px-3' :
                         'winner-list-body my-2 text-center winner-bg2 py-3 px-3'}>
                             <Col md={4} className='d-flex align-items-center'>
-                                <img src={Img1} className='winnerImg' alt='img1' />
+                                <img src={item.img} className='winnerImg' alt='img1' />
                                 <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
                                    <a className='link' href={` https://mumbai.polygonscan.com/address/${item.address}`} target="_blank">{item.address}</a> 
                                 </div>
                             </Col>
                             <Col md={4} className='d-flex align-items-center justify-content-center'>
-                                <p>#{item.poolid}</p>
+                                <p>#{item.serialnumber}</p>
                             </Col>
                             <Col md={4} className='d-flex align-items-center justify-content-center'>
-                                <p></p>
+                                <p>{item.amount}</p>
                             </Col>
                         </Row>
                     )

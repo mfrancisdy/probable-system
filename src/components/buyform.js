@@ -26,14 +26,20 @@ export default function BuyForm() {
     const [ soldPercentage, setSoldPercentage ] = useState(0);
     const [ poolIndex, setPoolIndex ] = useState(0);
     const [tokenName, setTokenName] = useState('');
+    const [ availableTickets, setAvailableTickets ] = useState(0);
     
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
     const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
 
+    // execute useEffect every 10 seconds
     useEffect(() => {
-        getPoolInfo();
+        const interval = setInterval(() => {
+            getPoolInfo();
+        }, 5000);
+        return () => clearInterval(interval);
     }, []);
+
 
     const getPoolInfo = async () => {
         const poolDetails = await lotteryContract.pools(0);
@@ -42,6 +48,8 @@ export default function BuyForm() {
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
         setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
+        const availabletickets = poolDetails[2].toNumber() - poolSize.toNumber();
+        setAvailableTickets(availabletickets);
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
         setPoolIndex(poolIndex.toNumber());
         const tokenSymbol = await tokenContract.symbol();
@@ -278,10 +286,12 @@ export default function BuyForm() {
                         </Row>
                         <Row className="mt-5 total-value">
                             <Col xs={6} sm={6} md={6}>
+                                <p className="total-txt">Available Tickets</p>
                                 <p className="total-txt">Per Ticket Price</p>
                                 <p className="total-txt">Total Amount</p>
                             </Col>
                             <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
+                                <p className="total-txt">{availableTickets}</p>
                                 <p className="total-txt">{ticketPrice} ${tokenName}</p>
                                 <p className="total-txt">{totalAmount} ${tokenName}</p>
                             </Col>
