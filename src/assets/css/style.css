@@ -547,6 +547,9 @@ a.navbar-brand>img {
     .connectBtn {
         margin-left: 0px;
     }
+    a.navbar-brand {
+        width: 75%;
+    }
 }
 
 @media (max-width: 540px){
@@ -601,6 +604,9 @@ a.navbar-brand>img {
     .connectBtn {
         margin-left: 0px;
     }
+    a.navbar-brand {
+        width: 75%;
+    }
 }
 
 @media (min-width: 541px) and (max-width: 768px){
@@ -643,6 +649,9 @@ a.navbar-brand>img {
     }
     .connectBtn {
         margin-left: 0px;
+    }
+    a.navbar-brand {
+        width: 75%;
     }
 }
 

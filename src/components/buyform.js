@@ -25,6 +25,7 @@ export default function BuyForm() {
     const [ ticketsSold, setTicketsSold ] = useState(0);
     const [ soldPercentage, setSoldPercentage ] = useState(0);
     const [ poolIndex, setPoolIndex ] = useState(0);
+    const [tokenName, setTokenName] = useState('');
     
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
@@ -43,6 +44,9 @@ export default function BuyForm() {
         setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
         setPoolIndex(poolIndex.toNumber());
+        const tokenSymbol = await tokenContract.symbol();
+        setTokenName(tokenSymbol);
+
     }
 
     function calculateTickets(e) {
@@ -278,8 +282,8 @@ export default function BuyForm() {
                                 <p className="total-txt">Total Amount</p>
                             </Col>
                             <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
-                                <p className="total-txt">{ticketPrice} $Tokens</p>
-                                <p className="total-txt">{totalAmount} $Tokens</p>
+                                <p className="total-txt">{ticketPrice} ${tokenName}</p>
+                                <p className="total-txt">{totalAmount} ${tokenName}</p>
                             </Col>
                         </Row>
                         <Row className="mt-3">
