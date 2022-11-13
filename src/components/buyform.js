@@ -244,7 +244,7 @@ export default function BuyForm() {
             <div className='buy-box'>
             <ToastContainer />
                 <h3 className="buy-title">LOTTERY #{poolIndex}</h3>
-                <p>Number of Tickets decide the probability of you winning the lottery. The more tickets you buy the more chances of you winning the Lottery.</p>
+                <p>Number of Tickets decide the probability of you winning the lottery. The more tickets you buy the more chances of you winning the Lottery. Get started below and increase your chances of winning!</p>
                 <div className='lottery-progress'>
                     <ProgressBar 
                     completed={soldPercentage}

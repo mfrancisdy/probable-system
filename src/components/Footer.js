@@ -9,14 +9,14 @@ export default function Footer() {
             <Container>
                 <Row className='flex-column-reverse flex-sm-column-reverse flex-md-row'>
                     <Col className="py-3 d-block d-md-flex align-items-center" md={8}>
-                        <p className='cpy'>Copyright Ⓒ Name 2022</p>
+                        <p className='cpy'>Copyright Ⓒ NWT- DAO</p>
                     </Col>
                     <Col className="py-3" md={4}>
                         <ul className="social-icons">
                             <li>
                                 <a href='#'><AiOutlineInstagram className='footer-ic' /></a>
-                                <a href='#'><TbWorld className='footer-ic' /></a>
-                                <a href='#'><AiOutlineTwitter className='footer-ic' /></a>
+                                <a href='https://t.me/NWT_DAO'><TbWorld className='footer-ic' /></a>
+                                <a href='https://twitter.com/Nwt_Dao'><AiOutlineTwitter className='footer-ic' /></a>
                                 <a href='#'><AiFillYoutube className="footer-ic" /></a>
                             </li>
                         </ul>

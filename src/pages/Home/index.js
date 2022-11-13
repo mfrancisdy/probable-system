@@ -17,8 +17,9 @@ export default function Home() {
                     <Col md={6} className='scroll1-col1'>
                         <h4>Win lottery online</h4>
                         <h2>Just One Click</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
-                        <button className='btn btn-primary scroll1-btn' href="#lottery">Enter lottery</button>
+                        <p>looking for a way to win some extra cash, why not try your luck in a lottery? If you win, the prize money will be deposited into your account. use it however you'd like! 
+                            So, what are you waiting for?</p>
+                        <a href="#lottery"><button className='btn btn-primary scroll1-btn'>Enter lottery</button></a>
                     </Col>
                     <Col md={6} className='scroll1-col2 d-none d-sm-none d-md-block'>
                         <img src={Scroll1img} alt='scroll1' />
@@ -31,27 +32,28 @@ export default function Home() {
                 <Row>
                     <Col md={12}>
                         <h2 className='text-center text-white'>follow These Easy Steps </h2>
-                        <p className='text-center py-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                        <p className='text-center py-3'>Follow these super simple steps to enter the lottery and start winning today! 
+                        Its fully decentalized and safe</p>
                         <Row className='scroll2-row gx-5 gy-5 py-5'>
                             <Col md={4} className='scroll2-col'>
                                 <div className='steps-box'>
                                     <h4 className='box-sub-head'>Step 1</h4>
                                     <h3 className='box-head'>Buy Tickets</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                    <p>Buy the required amount of tickets and increase your chances of winning the lottery.</p>
                                 </div>
                             </Col>
                             <Col md={4} className='scroll2-col'>
                                 <div className='steps-box'>
-                                    <h4 className='box-sub-head'>Step 1</h4>
-                                    <h3 className='box-head'>Buy Tickets</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                    <h4 className='box-sub-head'>Step 2</h4>
+                                    <h3 className='box-head'>Let pool end</h3>
+                                    <p>As people enter the lottery and the pool gets filled, it will automatically draw the winners randomly and will send rewards.</p>
                                 </div>
                             </Col>
                             <Col md={4} className='scroll2-col'>
                                 <div className='steps-box'>
-                                    <h4 className='box-sub-head'>Step 1</h4>
-                                    <h3 className='box-head'>Buy Tickets</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,</p>
+                                    <h4 className='box-sub-head'>Step 3</h4>
+                                    <h3 className='box-head'> Enjoy Lottery</h3>
+                                    <p>enjoy the rewards automatically in your wallet. Do whatever you want with your rewards!</p>
                                 </div>
                             </Col>
                         </Row>
@@ -81,7 +83,7 @@ export default function Home() {
                 <Row>
                     <Col md={12}>
                         <h2 className="text-center theme-text">Last Lottery Winner Result</h2>
-                        <p className='text-dark text-center py-5'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
+                        <p className='text-dark text-center py-5'>Checkout  our last winners here. Want to come in this list? get started with the lottery and win rewards automatically!</p>
                     </Col>
                 </Row>
                 <Row className='scroll4-row px-2'>
@@ -98,8 +100,8 @@ export default function Home() {
                         <img src={Chart} alt='chart' className='token-chart'/>
                     </Col>
                     <Col md={6}>
-                        <h2 className='theme-text'>Reward Distribution</h2>
-                        <p className='theme-text py-4'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
+                        <h2 className='theme-text'>reward Distribution system</h2>
+                        <p className='theme-text py-4'>The following is the rewards distribution. The contract randomly selects 9 lucky winners and sents the rewards to their address automatically. Everything is open, safe, and decentralized. Users can go to their wallet and check.</p>
                     </Col>
                 </Row>
             </Container>
@@ -110,9 +112,9 @@ export default function Home() {
                     <Col md={6}>
                         <h5>get a chance to win!</h5>
                         <h2 className='text-white py-3'>Daily Winners</h2>
-                        <p className='d-winners-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
+                        <p className='d-winners-text'>Win a chance to come in the list of winners by entering the Lucky draw. Winner rewards are automatically sent to the winners, in a safe and decentralized manner.</p>
                         <div className='d-inline-block mt-3'>
-                            <button className='btn btn-primary scroll6-btn'>Get Started</button>
+                            <a href='#lottery'><button className='btn btn-primary scroll6-btn'>Get Started</button></a>
                             <button className='btn btn-primary scroll6-btn-tp'>View More</button>
                         </div>
                     </Col>

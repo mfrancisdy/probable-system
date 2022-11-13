@@ -205,10 +205,9 @@ section.scroll1 {
 }
 
 .steps-box >p{
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: 0.105em;
-    text-transform: capitalize;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    letter-spacing: 0.105em !important;
     color: #222139;
 }
 
@@ -520,6 +519,9 @@ select.gtranslate {
     overflow-y: scroll;
 }
 
+a.navbar-brand>img {
+    width: 13%;
+}
 
 /* Meadia Query */
 
