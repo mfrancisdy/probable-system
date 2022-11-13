@@ -18,7 +18,7 @@ export default function Home() {
                         <h4>Win lottery online</h4>
                         <h2>Just One Click</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
-                        <button className='btn btn-primary scroll1-btn'>Enter lottery</button>
+                        <button className='btn btn-primary scroll1-btn' href="#lottery">Enter lottery</button>
                     </Col>
                     <Col md={6} className='scroll1-col2 d-none d-sm-none d-md-block'>
                         <img src={Scroll1img} alt='scroll1' />

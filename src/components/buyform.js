@@ -24,6 +24,7 @@ export default function BuyForm() {
     const [ totalAmount, setTotalAmount ] = useState(0);
     const [ ticketsSold, setTicketsSold ] = useState(0);
     const [ soldPercentage, setSoldPercentage ] = useState(0);
+    const [ poolIndex, setPoolIndex ] = useState(0);
     
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
@@ -40,6 +41,8 @@ export default function BuyForm() {
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
         setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
+        const poolIndex = await lotteryContract.getCurrentPoolIndex();
+        setPoolIndex(poolIndex.toNumber());
     }
 
     function calculateTickets(e) {
@@ -99,11 +102,11 @@ export default function BuyForm() {
             var txn = await tx.wait();
             if (txn.status === 1) {
                 toast.success("Transaction successful");
-                window.location.reload(false);
             }
         } catch (error) {
             const message = error.reason;
-            if (message === "execution reverted: token balance or allowance is lower than amount requested") {
+            const balance = await tokenContract.balanceOf(signer.getAddress());
+           if (message === "execution reverted: token balance or allowance is lower than amount requested" && balance >= amountInWei) {
                 approveToken(amountInWei);
             }
             else {
@@ -135,7 +138,6 @@ export default function BuyForm() {
                 var txn = await tx.wait();
                 if (txn.status === 1) {
                     toast.success("Transaction successful");
-                    window.location.reload(false);
                 }
             } catch (error) {
                 toast.error(error.reason);
@@ -157,7 +159,6 @@ export default function BuyForm() {
                 var txn = await tx.wait();
                 if (txn.status === 1) {
                     toast.success("Transaction successful");
-                    window.location.reload(false);
                 }
             } catch (error) {
                 const message = error.reason;
@@ -242,7 +243,7 @@ export default function BuyForm() {
         <div className='buy-form-container theme-bg'>
             <div className='buy-box'>
             <ToastContainer />
-                <h3 className="buy-title">LOTTERY #1</h3>
+                <h3 className="buy-title">LOTTERY #{poolIndex}</h3>
                 <p>Number of Tickets decide the probability of you winning the lottery. The more tickets you buy the more chances of you winning the Lottery.</p>
                 <div className='lottery-progress'>
                     <ProgressBar 
