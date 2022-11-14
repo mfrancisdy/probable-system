@@ -27,6 +27,7 @@ export default function BuyForm() {
     const [ poolIndex, setPoolIndex ] = useState(0);
     const [tokenName, setTokenName] = useState('');
     const [ availableTickets, setAvailableTickets ] = useState(0);
+    const [ tokenBalance, setTokenBalance ] = useState(0);
     
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
@@ -54,7 +55,33 @@ export default function BuyForm() {
         setPoolIndex(poolIndex.toNumber());
         const tokenSymbol = await tokenContract.symbol();
         setTokenName(tokenSymbol);
-
+        if (localStorage.getItem('connectedWallet') === 'metamask') {
+            const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
+            const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
+            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+        } else if(localStorage.getItem('connectedWallet') === 'wc') {
+            const connector = new WalletConnect({
+                bridge: "https://bridge.walletconnect.org",
+                qrcodeModal: QRCodeModal,
+                });
+                const provider = new WalletConnectProvider({
+                infuraId: "23496caecbbf436fb0a618b8129f6430",
+                chainId: 80001,
+                connector,
+                rpc: {
+                    80001: rpcUrl,
+                },
+                });
+            provider.enable();
+            const signer = new ethers.providers.Web3Provider(provider).getSigner();
+            const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
+            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+        } else if(localStorage.getItem('connectedWallet') === 'bk') {
+            const provider = window.bitkeep && window.bitkeep.ethereum;
+            const signer = new ethers.providers.Web3Provider(provider).getSigner();
+            const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
+            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+        }
     }
 
     function calculateTickets(e) {
@@ -284,14 +311,16 @@ export default function BuyForm() {
                                 <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(50)}}>50 Tickets</button>
                             </Col>
                         </Row>
-                        <Row className="mt-5 total-value">
+                        <Row className="mt-3 total-value">
                             <Col xs={6} sm={6} md={6}>
                                 <p className="total-txt">Available Tickets</p>
+                                <p className="total-txt">Token Balance</p>
                                 <p className="total-txt">Per Ticket Price</p>
                                 <p className="total-txt">Total Amount</p>
                             </Col>
                             <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
                                 <p className="total-txt">{availableTickets}</p>
+                                <p className="total-txt">{tokenBalance}</p>
                                 <p className="total-txt">{ticketPrice} ${tokenName}</p>
                                 <p className="total-txt">{totalAmount} ${tokenName}</p>
                             </Col>

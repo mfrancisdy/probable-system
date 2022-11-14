@@ -4,7 +4,7 @@ import Scroll1img from '../../assets/Images/scroll1win.png';
 import Scroll3img from '../../assets/Images/lottery.png';
 import BuyForm from '../../components/buyform';
 import WinnerList from '../../components/winnerlist';
-import Chart from '../../assets/Images/chart.png';
+import Chart from '../../assets/Images/chart.jpeg';
 import Users from '../../assets/Images/users.png';
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
-        <section className='scroll2'>
+        <section id="steps" className='scroll2'>
             <Container>
                 <Row>
                     <Col md={12}>
@@ -115,7 +115,7 @@ export default function Home() {
                         <p className='d-winners-text'>Win a chance to come in the list of winners by entering the Lucky draw. Winner rewards are automatically sent to the winners, in a safe and decentralized manner.</p>
                         <div className='d-inline-block mt-3'>
                             <a href='#lottery'><button className='btn btn-primary scroll6-btn'>Get Started</button></a>
-                            <button className='btn btn-primary scroll6-btn-tp'>View More</button>
+                            <a href="#steps"><button className='btn btn-primary scroll6-btn-tp'>Know More</button></a>
                         </div>
                     </Col>
                     <Col md={6} className='d-none d-sm-none d-md-block'>
@@ -124,6 +124,20 @@ export default function Home() {
                 </Row>
             </Container>
         </section>
+        <section className='scroll7'>
+            <Container>
+                <Row className="theme-bg py-5 m-0 d-winners">
+                    <Col md={6} className='d-none d-sm-none d-md-block'>
+                        <h5 className="btm-txt">Token Address</h5>
+                        <h5 className="btm-txt">Lottery Address</h5>
+                    </Col>
+                    <Col md={6} className='d-none d-sm-none d-md-block'>
+                        <h5>0x9389a6D59d3a04C76E1eb28CF11B7E032A2CDa6A</h5>
+                        <h5>0x8D1cc2747842630AC18e02ACA83cc4B3e171f917</h5>
+                    </Col>
+                </Row>   
+            </Container>
+         </section>   
         </>
     )
 }

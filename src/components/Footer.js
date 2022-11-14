@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { AiOutlineInstagram, AiOutlineTwitter, AiFillYoutube } from "react-icons/ai";
-import { TbWorld } from "react-icons/tb";
+import { TbBrandTelegram, TbWorld } from "react-icons/tb";
 
 export default function Footer() {
     return (
@@ -14,10 +14,8 @@ export default function Footer() {
                     <Col className="py-3" md={4}>
                         <ul className="social-icons">
                             <li>
-                                <a href='#'><AiOutlineInstagram className='footer-ic' /></a>
-                                <a href='https://t.me/NWT_DAO'><TbWorld className='footer-ic' /></a>
-                                <a href='https://twitter.com/Nwt_Dao'><AiOutlineTwitter className='footer-ic' /></a>
-                                <a href='#'><AiFillYoutube className="footer-ic" /></a>
+                                <a href='https://t.me/NWT_DAO' target="_blank"><TbBrandTelegram className='footer-ic' /></a>
+                                <a href='https://twitter.com/Nwt_Dao' target="_blank"><AiOutlineTwitter className='footer-ic' /></a>
                             </li>
                         </ul>
                     </Col>

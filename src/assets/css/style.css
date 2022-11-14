@@ -240,17 +240,17 @@ section.scroll1 {
 }
 
 .buy-title {
+    color: #fff;
+    font-size: 28px;
     font-weight: 700;
-    font-size: 34px;
     line-height: 64px;
     text-transform: capitalize;
-    color: #FFFFFF;
 }
 
 .buy-box>p {
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
+    font-size: 11px!important;
+    font-weight: 400!important;
+    line-height: 24px!important;
 }
 
 .progress-bg{
@@ -270,11 +270,11 @@ section.scroll1 {
 }
 
 .form-title {
-    font-weight: 500;
-    font-size: 21px;
-    line-height: 32px;
-    text-transform: capitalize;
     color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 18px;
+    text-transform: capitalize;
 }
 
 .buy-form-i {
@@ -311,24 +311,21 @@ section.scroll1 {
 }
 
 .total-txt {
-    font-weight: 500 !important;
-    font-size: 17px !important;
-    line-height: 54px !important;
-    text-transform: capitalize;
+    font-size: 14px!important;
+    font-weight: 500!important;
+    line-height: 26px!important;
 }
 
 .buy-btn {
-    height: 67px;
-    background: #8E71EA;
-    border-radius: 10px;
+    background: #8e71ea;
     border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
     font-weight: 700;
-    font-size: 20px;
+    padding: 18px 20px;
     text-align: center;
-    text-transform: capitalize;
-    color: #FFFFFF;
-    padding: 0 20px;
-    transition: all 0.5s ease;
+    transition: all .5s ease;
 }
 
 .buy-btn:hover {
@@ -369,7 +366,9 @@ section.scroll1 {
 .scroll6{
     padding: 120px 0;
 }
-
+.scroll7{
+    padding-bottom: 120px;
+}
 .d-winners{
     border-radius: 18px;
     padding: 0 30px;
@@ -391,6 +390,14 @@ section.scroll1 {
     letter-spacing: 0.105em;
     text-transform: capitalize;
     color: #7780A1;
+}
+.btm-txt {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0.105em;
+    text-transform: capitalize;
+    color: #ffffff !important;
 }
 
 .scroll6-btn {
@@ -520,7 +527,7 @@ select.gtranslate {
 }
 
 a.navbar-brand>img {
-    width: 13%;
+    width: 20%;
 }
 
 /* Meadia Query */

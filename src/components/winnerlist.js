@@ -43,25 +43,25 @@ export default function WinnerList() {
             grayscaleBias: false, // Change only the brightness of the color instead of the hue (default: undefined)
             seed: poolid
         });
-        for(let i = poolid - 1; i >=0; i--){
+        
             for(let j = 0; j < 9; j++){
+                let i = poolid - 1;
                 const winner = await lotteryContract.getAnyPoolWinners(i);
                 const winnerAddress = winner[j];
                 const amount = await lotteryContract.poolWinnersAmounts(winnerAddress, i);
                 const winneramount = amount.toString();
                 const art = generate();
                 const pix = art.toDataURL();
-                const serialnumber = ((i+1) * 9) - j;
+                //const serialnumber = ((i+1) * 9) - j;
                 setWinnerData(WinnerData => [...WinnerData, {
                     address: winnerAddress,
                     poolid: i,
                     img: pix,
-                    serialnumber: serialnumber,
+                    serialnumber: j,
                     amount: winneramount,
                 }]);
             }
-            
-        }
+                  
         setWinnerData(WinnerData => WinnerData.slice(1)); 
                           
     }
