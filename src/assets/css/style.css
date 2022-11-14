@@ -557,6 +557,10 @@ a.navbar-brand>img {
     a.navbar-brand {
         width: 75%;
     }
+    .address-txt {
+        overflow-x: scroll;
+        padding: 10px 0;
+    }
 }
 
 @media (max-width: 540px){
@@ -614,6 +618,10 @@ a.navbar-brand>img {
     a.navbar-brand {
         width: 75%;
     }
+    .address-txt {
+        overflow-x: scroll;
+        padding: 10px 0;
+    }
 }
 
 @media (min-width: 541px) and (max-width: 768px){
@@ -659,6 +667,10 @@ a.navbar-brand>img {
     }
     a.navbar-brand {
         width: 75%;
+    }
+    .address-txt {
+        overflow-x: scroll;
+        padding: 10px 0;
     }
 }
 

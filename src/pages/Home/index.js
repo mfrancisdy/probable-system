@@ -126,7 +126,7 @@ export default function Home() {
         </section>
         <section className='scroll7'>
             <Container>
-                <Row className="theme-bg py-5 m-0 d-winners">
+                <Row className="theme-bg py-5 m-0 d-winners d-none d-md-flex">
                     <Col md={6} className='d-none d-sm-none d-md-block'>
                         <h5 className="btm-txt">Token Address</h5>
                         <h5 className="btm-txt">Lottery Address</h5>
@@ -135,7 +135,17 @@ export default function Home() {
                         <h5>0x9389a6D59d3a04C76E1eb28CF11B7E032A2CDa6A</h5>
                         <h5>0x8D1cc2747842630AC18e02ACA83cc4B3e171f917</h5>
                     </Col>
-                </Row>   
+                </Row> 
+                <Row className="theme-bg py-5 m-0 d-winners d-block d-md-none">
+                    <Col md={6} className='d-block'>
+                        <h5 className="btm-txt">Token Address</h5>
+                        <h5 className='address-txt'>0x9389a6D59d3a04C76E1eb28CF11B7E032A2CDa6A</h5>
+                    </Col>
+                    <Col md={6} className='d-block'>
+                        <h5 className="btm-txt">Lottery Address</h5>
+                        <h5 className='address-txt'>0x8D1cc2747842630AC18e02ACA83cc4B3e171f917</h5>
+                    </Col>
+                </Row>  
             </Container>
          </section>   
         </>
