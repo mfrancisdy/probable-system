@@ -2,7 +2,6 @@ import React, { useEffect, useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { ethers, providers } from "ethers";
-import { useSigner, useProvider } from 'wagmi'
 import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 import { erc20address, erc20abi } from "./abis/erc20";
 import WalletConnect from "@walletconnect/client";
@@ -11,12 +10,13 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from 'web3';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { chain } from "wagmi";
 
 
 export default function BuyForm() {
 
-    const { data: signer } = useSigner()
-    const provider = useProvider();
+
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
     const [ maxTickets, setMaxTickets ] = useState(0);
     const [ ticketPrice, setTicketPrice ] = useState(0);
@@ -37,6 +37,7 @@ export default function BuyForm() {
     useEffect(() => {
         const interval = setInterval(() => {
             getPoolInfo();
+            tokenbalance();
         }, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -48,39 +49,62 @@ export default function BuyForm() {
         setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
-        setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
+        const percent = ((poolSize.toNumber() / poolDetails[2].toNumber()) * 100).toFixed(2);
+        setSoldPercentage(percent);
         const availabletickets = poolDetails[2].toNumber() - poolSize.toNumber();
         setAvailableTickets(availabletickets);
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
         setPoolIndex(poolIndex.toNumber());
-        const tokenSymbol = await tokenContract.symbol();
-        setTokenName(tokenSymbol);
+        const tokenaddress = await lotteryContract.getPoolTicketToken();
+        const response = await fetch('https://deep-index.moralis.io/api/v2/erc20/metadata?chain=bsc&addresses='+tokenaddress, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'X-API-Key': 'TWZEjRdJ3XCmja4GeRYx9GShQHNU8EnBdhVYUQSNFUuib4EiNkAbYyW4JTSrOYkg',
+            },
+        })
+        const json = await response.json();
+        setTokenName(json[0].symbol);
+
+        }
+
+    const tokenbalance = async () => {
+
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         } else if(localStorage.getItem('connectedWallet') === 'wc') {
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
                 qrcodeModal: QRCodeModal,
                 });
                 const provider = new WalletConnectProvider({
-                infuraId: "23496caecbbf436fb0a618b8129f6430",
-                chainId: 80001,
-                connector,
-                rpc: {
-                    80001: rpcUrl,
-                },
+                    rpc: {
+                        56: rpcUrl,
+                    },
+                    chainId: 56,
+                    network: "binance",
+                    qrcode: true,
+                    qrcodeModalOptions: {
+                        mobileLinks: [
+                          "metamask",
+                          "trust",
+                        ]
+                    }
                 });
-            provider.enable();
+                provider.networkId = 56;
+                provider.updateRpcUrl(56);
+                await provider.enable();
+                provider.updateRpcUrl(56);
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         } else if(localStorage.getItem('connectedWallet') === 'bk') {
             const provider = window.bitkeep && window.bitkeep.ethereum;
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         }
     }
 
@@ -118,7 +142,7 @@ export default function BuyForm() {
            if (localStorage.getItem('connectedWallet') === 'metamask') {
                Metamaskbuy(amount);
            } else if (localStorage.getItem('connectedWallet') === 'wc'){
-                approveToken(amountInWei);
+                WalletConnectbuy(amount);
               }
               else if (localStorage.getItem('connectedWallet') === 'bk'){
                 Bitkeepbuy(amount);
@@ -137,49 +161,81 @@ export default function BuyForm() {
             toast.info("Please wait while the transaction is being processed", {
                 timeout: 10000,
             });
-            var tx = await lotteryContract.buyTicket(tickets);
-            var txn = await tx.wait();
-            if (txn.status === 1) {
-                toast.success("Transaction successful");
-            }
-        } catch (error) {
-            const message = error.reason;
-            const balance = await tokenContract.balanceOf(signer.getAddress());
-           if (message === "execution reverted: token balance or allowance is lower than amount requested" && balance >= amountInWei) {
-                approveToken(amountInWei);
+            const chain = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chain !== '0x38') {
+                // switch to BSC
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }],
+                });
             }
             else {
-                toast.error(message);
-            }
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
+                const balance = await tokenContract.balanceOf(signer.getAddress());
+                const bal = balance.toString() / 1000000000000000000;
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {    
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
+                    toast.success("Transaction successful");
+                }
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
+                    approveToken(amountInWei);
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
+        }
+        } catch (error) {
+            toast.error("Transaction failed");
         }
     }
 
-    const WalletConnectbuy = async () => { 
+    const WalletConnectbuy = async (amount) => { 
+        const amountInWei = ethers.utils.parseEther(amount.toString());
        toast.info("Please wait while the transaction is being processed");
        const connector = new WalletConnect({
         bridge: "https://bridge.walletconnect.org",
         qrcodeModal: QRCodeModal,
         });
         const provider = new WalletConnectProvider({
-        infuraId: "23496caecbbf436fb0a618b8129f6430",
-        chainId: 80001,
+        chainId: 56,
         connector,
         rpc: {
-            80001: rpcUrl,
+            56: rpcUrl,
         },
         });
          provider.enable().then(async () => {
+            provider.updateRpcUrl(56);
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
-            console.log(signer);
             const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
+            const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
             try{
-                var tx = await lotteryContract.buyTicket(tickets);
-                var txn = await tx.wait();
-                if (txn.status === 1) {
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
+                const balance = await tokenContract.balanceOf(signer.getAddress());
+                const bal = balance.toString() / 1000000000000000000;
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
                     toast.success("Transaction successful");
                 }
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
+                    approveToken(amountInWei);
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
             } catch (error) {
-                toast.error(error.reason);
+                toast.error("Transaction failed");
             }
          });
 
@@ -193,17 +249,28 @@ export default function BuyForm() {
             const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
             const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
             try{
-                toast.info("processing transaction");
-                var tx = await lotteryContract.buyTicket(tickets);
-                var txn = await tx.wait();
-                if (txn.status === 1) {
+                toast.info("Please wait while the transaction is being processed")
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
+                const balance = await tokenContract.balanceOf(signer.getAddress());
+                const bal = balance.toString() / 1000000000000000000;
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {    
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
                     toast.success("Transaction successful");
                 }
-            } catch (error) {
-                const message = error.reason;
-                if (message === "execution reverted: token balance or allowance is lower than amount requested") {
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
                     approveToken(amountInWei);
-                }
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
+            } catch (error) {
+                toast.error("Transaction failed");
             }
     }
     
@@ -229,32 +296,35 @@ export default function BuyForm() {
             });
             // fetch provider from walletconnect
             const provider = new WalletConnectProvider({
-            infuraId: "23496caecbbf436fb0a618b8129f6430",
-            chainId: 80001,
-            connector,
-            rpc: {
-                80001: rpcUrl,
-            },
+                rpc: {
+                    56: rpcUrl,
+                },
+                chainId: 56,
+                network: "binance",
+                qrcode: true,
+                qrcodeModalOptions: {
+                    mobileLinks: [
+                      "metamask",
+                      "trust",
+                    ]
+                }
             });
-             provider.enable().then(async () => {
-                 const web3 = new Web3(provider);
-                 // get signer address
-                    const signer = new ethers.providers.Web3Provider(provider).getSigner();
-                    const address = await signer.getAddress();
-                    const tokenContract = new web3.eth.Contract(erc20abi, erc20address);
-                    try {
-                        var tx = await tokenContract.methods.approve(lotteryaddress, amountInWei.toString()).send({from:address});
-                        if (tx.status === true) {
-                            toast.success("Token approved");
-                            WalletConnectbuy();
-                        }
-                    }
-                    catch (error) {
-                        console.log(error)
-                        toast.error("Transaction failed");
-                    }
-                
-             });
+            provider.networkId = 56;
+            provider.updateRpcUrl(56);
+            await provider.enable();
+            provider.updateRpcUrl(56);
+            const signer = new ethers.providers.Web3Provider(provider).getSigner();
+            const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
+            try {
+                var tx = await tokenContract.approve(lotteryaddress, amountInWei);
+                var txn = await tx.wait();
+                if (txn.status === 1) {
+                    toast.success("Token approved");
+                    WalletConnectbuy(amountInWei / 1000000000000000000);
+                }
+            } catch (error) {
+                toast.error("Transaction failed");
+            }
       }
         else if (localStorage.getItem('connectedWallet') === 'bk'){
         
@@ -270,7 +340,6 @@ export default function BuyForm() {
                     }
                 } catch (error) {
                     toast.error(error);
-                    alert(error);
                 }
         }
    }
@@ -290,7 +359,7 @@ export default function BuyForm() {
                     bgColor="#8E71EA" 
                     height="21px" 
                     width="100%" 
-                    labelColor="#fff" 
+                    labelColor="rgb(255 255 255 / 0%)" 
                     labelSize="12px" 
                     barContainerClassName="progress-bg"
                     />
@@ -320,7 +389,7 @@ export default function BuyForm() {
                             </Col>
                             <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
                                 <p className="total-txt">{availableTickets}</p>
-                                <p className="total-txt">{tokenBalance}</p>
+                                <p className="total-txt">{tokenBalance}${tokenName}</p>
                                 <p className="total-txt">{ticketPrice} ${tokenName}</p>
                                 <p className="total-txt">{totalAmount} ${tokenName}</p>
                             </Col>

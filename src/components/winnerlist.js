@@ -2,7 +2,6 @@ import React, { useEffect, useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import Img1 from "../assets/Images/img1.png";
 import { ethers } from "ethers";
-import { useSigner, useProvider } from 'wagmi'
 import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 import { erc20address, erc20abi } from "./abis/erc20";
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,8 +12,8 @@ import { randpix, RandpixColorScheme, Symmetry } from 'randpix'
 window.Buffer = require('buffer/').Buffer;
 export default function WinnerList() {
 
-    const { data: signer } = useSigner()
-    const provider = useProvider();
+    
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
     const tokenContract = new ethers.Contract(erc20address, erc20abi, provider);
     const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, provider);
@@ -33,8 +32,16 @@ export default function WinnerList() {
 
     const getwinnerData = async () => {
         const poolid = await lotteryContract.getCurrentPoolIndex()
-        const tokenSymbol = await tokenContract.symbol();
-        setTokenName(tokenSymbol);
+        const tokenaddress = await lotteryContract.getPoolTicketToken();
+        const response = await fetch('https://deep-index.moralis.io/api/v2/erc20/metadata?chain=bsc&addresses='+tokenaddress, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'X-API-Key': 'TWZEjRdJ3XCmja4GeRYx9GShQHNU8EnBdhVYUQSNFUuib4EiNkAbYyW4JTSrOYkg',
+            },
+        })
+        const json = await response.json();
+        setTokenName(json[0].symbol);
         const generate = randpix({
             colorScheme: RandpixColorScheme.NEUTRAL, // Color theme (default: NEUTRAL)
             size: 8, // Art size. Recommended 7 or 8 (odd/even symmetry) (default: 8)
@@ -57,7 +64,7 @@ export default function WinnerList() {
                     address: winnerAddress,
                     poolid: i,
                     img: pix,
-                    serialnumber: j,
+                    serialnumber: ++j,
                     amount: winneramount,
                 }]);
             }

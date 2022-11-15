@@ -7,6 +7,8 @@ import Bk from '../assets/Images/bk.png';
 import Web3 from 'web3';
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { lotteryaddress, rpcUrl, lotteryabi } from "./abis/lotteryabi";
 
 window.Buffer = require('buffer/').Buffer;
 
@@ -45,7 +47,7 @@ export default function Header() {
                     const connect = await window.ethereum.request({
                         method: "eth_requestAccounts",
                     });
-                    const chainId = 80001
+                    const chainId = 56
                     if (window.ethereum.networkVersion !== chainId) {
                         try {
                             await window.ethereum.request({
@@ -59,10 +61,10 @@ export default function Header() {
                                     method: 'wallet_addEthereumChain',
                                     params: [
                                         {
-                                            chainName: 'Polygon Testnet',
+                                            chainName: 'BSC Mainnet',
                                             chainId: Web3.utils.toHex(chainId),
-                                            nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
-                                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                            nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
+                                            rpcUrls: ['https://bsc-dataseed.binance.org']
                                         }
                                     ]
                                 });
@@ -83,61 +85,54 @@ export default function Header() {
                 bridge: "https://bridge.walletconnect.org",
                 qrcodeModal: QRCodeModal,
             });
-            if (!connector.connected) {
-                // create new session
-                connector.createSession();
-                connector.on("connect", (error, payload) => {
-                    if (error) {
-                        throw error;
-                    } 
-                    const { accounts, chainId } = payload.params[0];
-                    if (chainId !== 80001) {
-                        connector.sendCustomRequest({
-                            method: "wallet_switchEthereumChain",
-                            params: [{ chainId: Web3.utils.toHex(80001) }],
-                        });
-                    }
-                    localStorage.setItem('connectedWallet', 'wc');
-                    setWalletConnected(true);
-                    closeWalletPopup();
+            const provider = new WalletConnectProvider({
+                rpc: {
+                    56: rpcUrl,
+                },
+                chainId: 56,
+                network: "binance",
+                qrcode: true,
+                qrcodeModalOptions: {
+                    mobileLinks: [
+                      "metamask",
+                      "trust",
+                    ]
+                }
+            });
+            provider.updateRpcUrl(56);
+            await provider.enable();
+            localStorage.setItem('connectedWallet', 'wc');
+                setWalletConnected(true);
+                closeWalletPopup();
+            provider.updateRpcUrl(56);
+            // get the chainId
+            const chainId = await provider.request({
+                method: "eth_chainId",
+            });
+            if (chainId !== "0x38") {
+                // switch to the correct chainId
+                await provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x38" }],
                 });
-            } else {
-                    connector.on("connect", (error, payload) => {
-                    if (error) {
-                        throw error;
-                    }
-                    const { accounts, chainId } = payload.params[0];
-                    if (chainId !== 8001) {
-                        try{
-                            connector.sendCustomRequest({
-                                method: 'wallet_switchEthereumChain',
-                                params: [{ chainId: Web3.utils.toHex(8001) }]
-                            });
-                        } catch (err) {
-                            // This error code indicates that the chain has not been added to MetaMask
-                            if (err.code === 4902) {
-                                connector.sendCustomRequest({
-                                    method: 'wallet_addEthereumChain',
-                                    params: [
-                                        {
-                                            chainName: 'Polygon Testnet',
-                                            chainId: Web3.utils.toHex(8001),
-                                            nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
-                                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
-                                        }
-                                    ]
-                                });
-                            }
-                            }
-                    }
-
-                    localStorage.setItem('connectedWallet', 'wc');
-                    setWalletConnected(true);
-                    closeWalletPopup();
-                });
-    
+            }else{
+                localStorage.setItem('connectedWallet', 'wc');
+                setWalletConnected(true);
+                closeWalletPopup();
             }
-        }else if(wallet === 'tp'){
+            provider.onConnect((error, payload) => {
+                if (error) {
+                    throw error;
+                }
+                localStorage.setItem('connectedWallet', 'wc');
+                setWalletConnected(true);
+                closeWalletPopup();
+            });
+
+            } 
+    
+            
+        else if(wallet === 'tp'){
             closeWalletPopup();
         } else if(wallet === 'bk'){
             
@@ -150,7 +145,7 @@ export default function Header() {
                 const connect = await provider.request({
                     method: "eth_requestAccounts",
                 });
-                const chainId = 80001
+                const chainId = 56
                 if( provider.chainId !== chainId ) {
                     try {
                         await provider.request({
@@ -164,10 +159,10 @@ export default function Header() {
                                 method: 'wallet_addEthereumChain',
                                 params: [
                                     {
-                                        chainName: 'Polygon Testnet',
+                                        chainName: 'BSC Mainnet',
                                         chainId: Web3.utils.toHex(chainId),
-                                        nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
-                                        rpcUrls: ['https://matic-mumbai.chainstacklabs.com']
+                                        nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
+                                        rpcUrls: ['https://bsc-dataseed.binance.org']
                                     }
                                 ]
                             });
