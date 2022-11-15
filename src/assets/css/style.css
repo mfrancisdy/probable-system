@@ -528,6 +528,12 @@ select.gtranslate {
 
 a.navbar-brand>img {
     width: 20%;
+    transition: all 0.3s ease;
+}
+
+.logo-sticky {
+    width: 10% !important;
+    transition: all 0.3s ease;
 }
 
 /* Meadia Query */
