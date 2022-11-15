@@ -37,9 +37,9 @@ export default function BuyForm() {
     useEffect(() => {
         const interval = setInterval(() => {
             getPoolInfo();
+            tokenbalance();
         }, 5000);
         return () => clearInterval(interval);
-        tokenbalance();
     }, []);
 
 
@@ -183,7 +183,10 @@ export default function BuyForm() {
         } catch (error) {
             const message = error.reason;
             const balance = await tokenContract.balanceOf(signer.getAddress());
-           if (balance >= amountInWei) {
+            const bal = balance.toString() / 1000000000000000000;
+            const balInt = parseInt(bal);
+            const amountInt = parseInt(amount);
+            if (balInt >= amountInt) {
                 approveToken(amountInWei);
             }
             else {
@@ -240,12 +243,15 @@ export default function BuyForm() {
             } catch (error) {
                 const message = error.reason;
                 const balance = await tokenContract.balanceOf(signer.getAddress());
-                if (balance >= amountInWei) {
-                    approveToken(amountInWei);
-                }
-                else {
-                    toast.error(message);
-                }
+                const bal = balance.toString() / 1000000000000000000;
+            const balInt = parseInt(bal);
+            const amountInt = parseInt(amount);
+            if (balInt >= amountInt) {
+                approveToken(amountInWei);
+            }
+            else {
+                toast.error(message);
+            }
             }
     }
     
