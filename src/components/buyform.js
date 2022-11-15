@@ -49,7 +49,8 @@ export default function BuyForm() {
         setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
-        setSoldPercentage((poolSize.toNumber() / poolDetails[2].toNumber()) * 100);
+        const percent = ((poolSize.toNumber() / poolDetails[2].toNumber()) * 100).toFixed(2);
+        setSoldPercentage(percent);
         const availabletickets = poolDetails[2].toNumber() - poolSize.toNumber();
         setAvailableTickets(availabletickets);
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
@@ -72,7 +73,7 @@ export default function BuyForm() {
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         } else if(localStorage.getItem('connectedWallet') === 'wc') {
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
@@ -98,12 +99,12 @@ export default function BuyForm() {
                 provider.updateRpcUrl(56);
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         } else if(localStorage.getItem('connectedWallet') === 'bk') {
             const provider = window.bitkeep && window.bitkeep.ethereum;
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            setTokenBalance(tokenBalance.toString() / 1000000000000000000);
+            setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
         }
     }
 
@@ -141,7 +142,7 @@ export default function BuyForm() {
            if (localStorage.getItem('connectedWallet') === 'metamask') {
                Metamaskbuy(amount);
            } else if (localStorage.getItem('connectedWallet') === 'wc'){
-                approveToken(amountInWei);
+                WalletConnectbuy(amount);
               }
               else if (localStorage.getItem('connectedWallet') === 'bk'){
                 Bitkeepbuy(amount);
@@ -167,35 +168,35 @@ export default function BuyForm() {
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: '0x38' }],
                 });
-                var tx = await lotteryContract.buyTicket(tickets);
-                var txn = await tx.wait();
-                if (txn.status === 1) {
-                toast.success("Transaction successful");
-            }
             }
             else {
-            var tx = await lotteryContract.buyTicket(tickets);
-            var txn = await tx.wait();
-            if (txn.status === 1) {
-                toast.success("Transaction successful");
-            }
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
+                const balance = await tokenContract.balanceOf(signer.getAddress());
+                const bal = balance.toString() / 1000000000000000000;
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {    
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
+                    toast.success("Transaction successful");
+                }
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
+                    approveToken(amountInWei);
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
         }
         } catch (error) {
-            const message = error.reason;
-            const balance = await tokenContract.balanceOf(signer.getAddress());
-            const bal = balance.toString() / 1000000000000000000;
-            const balInt = parseInt(bal);
-            const amountInt = parseInt(amount);
-            if (balInt >= amountInt) {
-                approveToken(amountInWei);
-            }
-            else {
-                toast.error(message);
-            }
+            toast.error("Transaction failed");
         }
     }
 
-    const WalletConnectbuy = async () => { 
+    const WalletConnectbuy = async (amount) => { 
+        const amountInWei = ethers.utils.parseEther(amount.toString());
        toast.info("Please wait while the transaction is being processed");
        const connector = new WalletConnect({
         bridge: "https://bridge.walletconnect.org",
@@ -211,16 +212,30 @@ export default function BuyForm() {
          provider.enable().then(async () => {
             provider.updateRpcUrl(56);
             const signer = new ethers.providers.Web3Provider(provider).getSigner();
-            console.log(signer);
             const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
+            const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
             try{
-                var tx = await lotteryContract.buyTicket(tickets);
-                var txn = await tx.wait();
-                if (txn.status === 1) {
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
+                const balance = await tokenContract.balanceOf(signer.getAddress());
+                const bal = balance.toString() / 1000000000000000000;
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
                     toast.success("Transaction successful");
                 }
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
+                    approveToken(amountInWei);
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
             } catch (error) {
-                toast.error(error.reason);
+                toast.error("Transaction failed");
             }
          });
 
@@ -234,24 +249,28 @@ export default function BuyForm() {
             const tokenContract = new ethers.Contract(erc20address, erc20abi, signer);
             const lotteryContract = new ethers.Contract(lotteryaddress, lotteryabi, signer);
             try{
-                toast.info("processing transaction");
-                var tx = await lotteryContract.buyTicket(tickets);
-                var txn = await tx.wait();
-                if (txn.status === 1) {
-                    toast.success("Transaction successful");
-                }
-            } catch (error) {
-                const message = error.reason;
+                toast.info("Please wait while the transaction is being processed")
+                const allowance = await tokenContract.allowance(signer.getAddress(), lotteryaddress);
+                const allow = allowance.toString() / 1000000000000000000;
+                const allowInt = parseInt(allow);
+                const amountInt = parseInt(amount);
                 const balance = await tokenContract.balanceOf(signer.getAddress());
                 const bal = balance.toString() / 1000000000000000000;
-            const balInt = parseInt(bal);
-            const amountInt = parseInt(amount);
-            if (balInt >= amountInt) {
-                approveToken(amountInWei);
-            }
-            else {
-                toast.error(message);
-            }
+                const balInt = parseInt(bal);
+                if (allowInt >= amountInt && balInt >= amountInt)  {    
+                    var tx = await lotteryContract.buyTicket(tickets);
+                    var txn = await tx.wait();
+                    if (txn.status === 1) {
+                    toast.success("Transaction successful");
+                }
+                } else if (allowInt < amountInt && balInt >= amountInt) {
+                    toast.warning("Please approve the token first");
+                    approveToken(amountInWei);
+                    } else if (balInt < amountInt) {
+                        toast.error("Insufficient balance");
+                    }
+            } catch (error) {
+                toast.error("Transaction failed");
             }
     }
     
@@ -301,7 +320,7 @@ export default function BuyForm() {
                 var txn = await tx.wait();
                 if (txn.status === 1) {
                     toast.success("Token approved");
-                    WalletConnectbuy();
+                    WalletConnectbuy(amountInWei / 1000000000000000000);
                 }
             } catch (error) {
                 toast.error("Transaction failed");
@@ -321,7 +340,6 @@ export default function BuyForm() {
                     }
                 } catch (error) {
                     toast.error(error);
-                    alert(error);
                 }
         }
    }
@@ -341,7 +359,7 @@ export default function BuyForm() {
                     bgColor="#8E71EA" 
                     height="21px" 
                     width="100%" 
-                    labelColor="#fff" 
+                    labelColor="rgb(255 255 255 / 0%)" 
                     labelSize="12px" 
                     barContainerClassName="progress-bg"
                     />
