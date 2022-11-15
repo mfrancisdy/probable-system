@@ -532,7 +532,7 @@ a.navbar-brand>img {
 }
 
 .logo-sticky {
-    width: 10% !important;
+    /* width: 10% !important; */
     transition: all 0.3s ease;
 }
 
@@ -562,11 +562,13 @@ a.navbar-brand>img {
     }
     a.navbar-brand {
         width: 75%;
+        margin-right: 0px !important;
     }
     .address-txt {
         overflow-x: scroll;
         padding: 10px 0;
     }
+    
 }
 
 @media (max-width: 540px){
@@ -577,7 +579,7 @@ a.navbar-brand>img {
         padding: 83px 0;
     }
     .navbar {
-        padding: 0 14px;
+        padding: 0px 14px;
     }
     .header{
         background: rgba( 255, 255, 255, 0.65 );
