@@ -4,6 +4,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+body>.skiptranslate {
+    display: none;
+}
+
 .link {
     color: #fff;
     text-decoration: none;
@@ -45,6 +50,7 @@ p{
 }
 
 .header {
+    top: 0px;
     background: transparent;
     width: 100%;
     z-index: 10;
