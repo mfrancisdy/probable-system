@@ -158,48 +158,48 @@ export default function Header() {
             } 
     
             
-        else if(wallet === 'tp'){
-            closeWalletPopup();
-        } else if(wallet === 'bk'){
+        // else if(wallet === 'tp'){
+        //     closeWalletPopup();
+        // } else if(wallet === 'bk'){
             
-            const provider = window.bitkeep && window.bitkeep.ethereum;
-            console.log(provider)
-            if (!provider) {
-                window.open('https://bitkeep.com/en/download?type=2');
-                throw "Please go to our official website to download!!"
-            } else {
-                const connect = await provider.request({
-                    method: "eth_requestAccounts",
-                });
-                const chainId = 56
-                if( provider.chainId !== chainId ) {
-                    try {
-                        await provider.request({
-                            method: 'wallet_switchEthereumChain',
-                             params: [{ chainId: Web3.utils.toHex(chainId) }]
-                        });
-                    } catch (err) {
-                        // This error code indicates that the chain has not been added to MetaMask
-                        if (err.code === 4902) {
-                            await provider.request({
-                                method: 'wallet_addEthereumChain',
-                                params: [
-                                    {
-                                        chainName: 'BSC Mainnet',
-                                        chainId: Web3.utils.toHex(chainId),
-                                        nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
-                                        rpcUrls: ['https://bsc-dataseed.binance.org']
-                                    }
-                                ]
-                            });
-                        }
-                    }
-                }
-                localStorage.setItem('connectedWallet', 'bk');
-                setWalletConnected(true);
-                closeWalletPopup();
-            }
-        }
+        //     const provider = window.bitkeep && window.bitkeep.ethereum;
+        //     console.log(provider)
+        //     if (!provider) {
+        //         window.open('https://bitkeep.com/en/download?type=2');
+        //         throw "Please go to our official website to download!!"
+        //     } else {
+        //         const connect = await provider.request({
+        //             method: "eth_requestAccounts",
+        //         });
+        //         const chainId = 56
+        //         if( provider.chainId !== chainId ) {
+        //             try {
+        //                 await provider.request({
+        //                     method: 'wallet_switchEthereumChain',
+        //                      params: [{ chainId: Web3.utils.toHex(chainId) }]
+        //                 });
+        //             } catch (err) {
+        //                 // This error code indicates that the chain has not been added to MetaMask
+        //                 if (err.code === 4902) {
+        //                     await provider.request({
+        //                         method: 'wallet_addEthereumChain',
+        //                         params: [
+        //                             {
+        //                                 chainName: 'BSC Mainnet',
+        //                                 chainId: Web3.utils.toHex(chainId),
+        //                                 nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
+        //                                 rpcUrls: ['https://bsc-dataseed.binance.org']
+        //                             }
+        //                         ]
+        //                     });
+        //                 }
+        //             }
+        //         }
+        //         localStorage.setItem('connectedWallet', 'bk');
+        //         setWalletConnected(true);
+        //         closeWalletPopup();
+        //     }
+        // }
         
     }
 
@@ -258,12 +258,12 @@ export default function Header() {
                     <Col xs={6} sm={6} md={6} className='border-bottom wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
                     </Col>
-                    <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
+                    {/* <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Tp} alt='tokenpocket' className='walletpopup-img'/>
                     </Col>
                     <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
                         <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
-                    </Col>
+                    </Col> */}
                     </Row>
             </div>
         </div>
