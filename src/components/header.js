@@ -14,6 +14,21 @@ window.Buffer = require('buffer/').Buffer;
 
 
 export default function Header() {
+
+    const [width, setWidth] = useState(window.innerWidth);
+
+function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+}
+    useEffect(() => {
+        console.log(width);
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+        window.removeEventListener('resize', handleWindowSizeChange);
+    }
+}, []);
+
+const isMobile = width <= 768;
     
     window.onscroll = function() {scrollFunction()};
     function scrollFunction() {
@@ -26,8 +41,13 @@ export default function Header() {
         }
     }
 
-    function selectWallet(){
-        document.querySelector('.walletpopup-container').classList.add('show');
+    function selectWallet() {
+        if (isMobile) {
+            connectWallet('metamask');
+        }
+        else {
+            document.querySelector('.walletpopup-container').classList.add('show');
+        }
     }
 
     const closeWalletPopup = () => {
@@ -223,25 +243,25 @@ export default function Header() {
         </header>
         <div className='walletpopup-container'>
         <div className='walletpopup'>
-            <div className='walletpopup-head'>
+            {/* <div className='walletpopup-head'>
                 <h3 className='text-center'>Connect Wallet</h3>
                 <button className='walletpopup-close' onClick={closeWalletPopup}>X</button>
-            </div>
+            </div> */}
             <div className='walletpopup-body'>
-                <Row>
+                <Row className='walletpopup_row'>
                     <Col xs={6} sm={6} md={6} className='border-right border-bottom wallet-btn' onClick={()=>{connectWallet('metamask')}}>
                         <img src={MetaMask} alt='metamask' className='walletpopup-img'/>
                     </Col>
                     <Col xs={6} sm={6} md={6} className='border-bottom wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
                     </Col>
+                    </Row>
                     {/* <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Tp} alt='tokenpocket' className='walletpopup-img'/>
                     </Col>
                     <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
                         <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
                     </Col> */}
-                </Row>
             </div>
         </div>
     </div>

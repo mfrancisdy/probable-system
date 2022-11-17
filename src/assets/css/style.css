@@ -486,7 +486,7 @@ ul.social-icons {
 }
 
 .walletpopup {
-    width: 50%;
+    width: 40%;
     background: #fff;
     height: auto;
     border-radius: 12px;
@@ -504,7 +504,13 @@ ul.social-icons {
 }
 
 .walletpopup-img {
-    width: 87%;
+    width: 100%;
+}
+
+.walletpopup_row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .border-right.col-md-6 {
