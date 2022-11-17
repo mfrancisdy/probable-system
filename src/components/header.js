@@ -241,12 +241,12 @@ const isMobile = width <= 768;
                 </Container>
             </Navbar>
         </header>
-        <div className='walletpopup-container'>
+        <div className='walletpopup-container' onClick={closeWalletPopup}>
         <div className='walletpopup'>
-            {/* <div className='walletpopup-head'>
-                <h3 className='text-center'>Connect Wallet</h3>
-                <button className='walletpopup-close' onClick={closeWalletPopup}>X</button>
-            </div> */}
+            {/* <div className='walletpopup-head'> */}
+                {/* <h3 className='text-center'>Connect Wallet</h3> */}
+                {/* <button className='walletpopup-close' onClick={closeWalletPopup}>X</button> */}
+            {/* </div> */}
             <div className='walletpopup-body'>
                 <Row className='walletpopup_row'>
                     <Col xs={6} sm={6} md={6} className='border-right border-bottom wallet-btn' onClick={()=>{connectWallet('metamask')}}>
