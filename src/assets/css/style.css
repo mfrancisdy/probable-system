@@ -486,7 +486,7 @@ ul.social-icons {
 }
 
 .walletpopup {
-    width: 40%;
+    width: 50%;
     background: #fff;
     height: auto;
     border-radius: 12px;
@@ -504,14 +504,14 @@ ul.social-icons {
 }
 
 .walletpopup-img {
-    width: 100%;
+    width: 70%;
 }
 
-.walletpopup_row{
+/* .walletpopup_row{
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+} */
 
 .border-right.col-md-6 {
     border-right: 1px solid #dee2e6;
