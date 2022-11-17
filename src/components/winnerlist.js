@@ -36,9 +36,9 @@ export default function WinnerList() {
         const tokenaddress = await lotteryContract.getPoolTicketToken();
         const poolDetails = await lotteryContract.pools(0);
         const TicketPrice = poolDetails[1].toString() / 1000000000000000000 ;
-        const poolSize = await lotteryContract.getCurrentPoolSize();
+        const poolSize = poolDetails[2];
         const ps = poolSize.toNumber();
-        // console.log(poolSize);
+        console.log(ps);
         // console.log(TicketPrice);
         const response = await fetch('https://deep-index.moralis.io/api/v2/erc20/metadata?chain=bsc&addresses='+tokenaddress, {
             method: 'GET',
