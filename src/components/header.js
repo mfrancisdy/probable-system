@@ -14,6 +14,21 @@ window.Buffer = require('buffer/').Buffer;
 
 
 export default function Header() {
+
+//     const [width, setWidth] = useState(window.innerWidth);
+
+// function handleWindowSizeChange() {
+//     setWidth(window.innerWidth);
+// }
+//     useEffect(() => {
+//         console.log(width);
+//     window.addEventListener('resize', handleWindowSizeChange);
+//     return () => {
+//         window.removeEventListener('resize', handleWindowSizeChange);
+//     }
+// }, []);
+
+// const isMobile = width <= 768;
     
     window.onscroll = function() {scrollFunction()};
     function scrollFunction() {
@@ -26,8 +41,15 @@ export default function Header() {
         }
     }
 
-    function selectWallet(){
-        document.querySelector('.walletpopup-container').classList.add('show');
+    function selectWallet() {
+        // if (isMobile) {
+        //     connectWallet('metamask');
+        // }
+        // else {
+        //     document.querySelector('.walletpopup-container').classList.add('show');
+        // }
+            document.querySelector('.walletpopup-container').classList.add('show');
+
     }
 
     const closeWalletPopup = () => {
@@ -40,7 +62,7 @@ export default function Header() {
         setWalletConnected(true);
         }
     else {
-        selectWallet();
+        connectWallet('metamask');
         }
     }, []);
     const connectWallet = async (wallet) => {
@@ -80,9 +102,10 @@ export default function Header() {
                 } catch (err) {
                     console.log(err)
                 }
-            } else {
-                alert("Please Download Metemask Extension for Chrome")
             }
+            // else {
+            //     alert("Please Download Metemask Extension for Chrome")
+            // }
         }else if(wallet === 'wc'){
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
@@ -135,48 +158,48 @@ export default function Header() {
             } 
     
             
-        else if(wallet === 'tp'){
-            closeWalletPopup();
-        } else if(wallet === 'bk'){
+        // else if(wallet === 'tp'){
+        //     closeWalletPopup();
+        // } else if(wallet === 'bk'){
             
-            const provider = window.bitkeep && window.bitkeep.ethereum;
-            console.log(provider)
-            if (!provider) {
-                window.open('https://bitkeep.com/en/download?type=2');
-                throw "Please go to our official website to download!!"
-            } else {
-                const connect = await provider.request({
-                    method: "eth_requestAccounts",
-                });
-                const chainId = 56
-                if( provider.chainId !== chainId ) {
-                    try {
-                        await provider.request({
-                            method: 'wallet_switchEthereumChain',
-                             params: [{ chainId: Web3.utils.toHex(chainId) }]
-                        });
-                    } catch (err) {
-                        // This error code indicates that the chain has not been added to MetaMask
-                        if (err.code === 4902) {
-                            await provider.request({
-                                method: 'wallet_addEthereumChain',
-                                params: [
-                                    {
-                                        chainName: 'BSC Mainnet',
-                                        chainId: Web3.utils.toHex(chainId),
-                                        nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
-                                        rpcUrls: ['https://bsc-dataseed.binance.org']
-                                    }
-                                ]
-                            });
-                        }
-                    }
-                }
-                localStorage.setItem('connectedWallet', 'bk');
-                setWalletConnected(true);
-                closeWalletPopup();
-            }
-        }
+        //     const provider = window.bitkeep && window.bitkeep.ethereum;
+        //     console.log(provider)
+        //     if (!provider) {
+        //         window.open('https://bitkeep.com/en/download?type=2');
+        //         throw "Please go to our official website to download!!"
+        //     } else {
+        //         const connect = await provider.request({
+        //             method: "eth_requestAccounts",
+        //         });
+        //         const chainId = 56
+        //         if( provider.chainId !== chainId ) {
+        //             try {
+        //                 await provider.request({
+        //                     method: 'wallet_switchEthereumChain',
+        //                      params: [{ chainId: Web3.utils.toHex(chainId) }]
+        //                 });
+        //             } catch (err) {
+        //                 // This error code indicates that the chain has not been added to MetaMask
+        //                 if (err.code === 4902) {
+        //                     await provider.request({
+        //                         method: 'wallet_addEthereumChain',
+        //                         params: [
+        //                             {
+        //                                 chainName: 'BSC Mainnet',
+        //                                 chainId: Web3.utils.toHex(chainId),
+        //                                 nativeCurrency: { name: 'BNB', decimals: 18, symbol: 'BNB' },
+        //                                 rpcUrls: ['https://bsc-dataseed.binance.org']
+        //                             }
+        //                         ]
+        //                     });
+        //                 }
+        //             }
+        //         }
+        //         localStorage.setItem('connectedWallet', 'bk');
+        //         setWalletConnected(true);
+        //         closeWalletPopup();
+        //     }
+        // }
         
     }
 
@@ -221,14 +244,14 @@ export default function Header() {
                 </Container>
             </Navbar>
         </header>
-        <div className='walletpopup-container'>
+        <div className='walletpopup-container' onClick={closeWalletPopup}>
         <div className='walletpopup'>
-            <div className='walletpopup-head'>
-                <h3 className='text-center'>Connect Wallet</h3>
-                <button className='walletpopup-close' onClick={closeWalletPopup}>X</button>
-            </div>
+            {/* <div className='walletpopup-head'> */}
+                {/* <h3 className='text-center'>Connect Wallet</h3> */}
+                {/* <button className='walletpopup-close' onClick={closeWalletPopup}>X</button> */}
+            {/* </div> */}
             <div className='walletpopup-body'>
-                <Row>
+                <Row className='walletpopup_row'>
                     <Col xs={6} sm={6} md={6} className='border-right border-bottom wallet-btn' onClick={()=>{connectWallet('metamask')}}>
                         <img src={MetaMask} alt='metamask' className='walletpopup-img'/>
                     </Col>
@@ -241,7 +264,7 @@ export default function Header() {
                     <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
                         <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
                     </Col> */}
-                </Row>
+                    </Row>
             </div>
         </div>
     </div>

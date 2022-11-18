@@ -31,8 +31,15 @@ export default function WinnerList() {
     }, []);
 
     const getwinnerData = async () => {
+        const wd = [];
         const poolid = await lotteryContract.getCurrentPoolIndex()
         const tokenaddress = await lotteryContract.getPoolTicketToken();
+        const poolDetails = await lotteryContract.pools(0);
+        const TicketPrice = poolDetails[1].toString() / 1000000000000000000 ;
+        const poolSize = poolDetails[2];
+        const ps = poolSize.toNumber();
+        console.log(ps);
+        // console.log(TicketPrice);
         const response = await fetch('https://deep-index.moralis.io/api/v2/erc20/metadata?chain=bsc&addresses='+tokenaddress, {
             method: 'GET',
             headers: {
@@ -50,30 +57,52 @@ export default function WinnerList() {
             grayscaleBias: false, // Change only the brightness of the color instead of the hue (default: undefined)
             seed: poolid
         });
-        
-            for(let j = 0; j < 9; j++){
-                let i = poolid - 1;
-                const winner = await lotteryContract.getAnyPoolWinners(i);
+
+        let i = poolid - 1;
+        const win = await lotteryContract.getAnyPoolWinners(i);
+        let winner = [...new Set(win)];
+        console.log(winner);
+
+            for(let j = 0; j < winner.length; j++){
                 const winnerAddress = winner[j];
                 const amount = await lotteryContract.poolWinnersAmounts(winnerAddress, i);
-                const winneramount = amount.toString();
+                const winneramount = ((amount*TicketPrice*ps)/100).toFixed(2).toString();
+                console.log(winnerAddress); 
+                console.log(winneramount);
                 const art = generate();
                 const pix = art.toDataURL();
                 //const serialnumber = ((i+1) * 9) - j;
-                setWinnerData(WinnerData => [...WinnerData, {
+                // setWinnerData(WinnerData => [...WinnerData, {
+                //     address: winnerAddress,
+                //     poolid: i,
+                //     img: pix,
+                //     serialnumber: ++j,
+                //     amount: winneramount,
+                // }]);
+                wd.push({
                     address: winnerAddress,
                     poolid: i,
                     img: pix,
-                    serialnumber: ++j,
+                    serialnumber: j+1,
                     amount: winneramount,
-                }]);
+                });
+                console.log(wd);
             }
-                  
-        setWinnerData(WinnerData => WinnerData.slice(1)); 
-                          
-    }
-    
-   
+            setWinnerData(wd); 
+        }
+        
+        // WinnerData.filter(function(item){
+        // var i = resArr.findIndex(x => (x.address == item.address));
+        // if(i <= -1){
+        //         resArr.push(item);
+        // }
+        // return null;
+        // });
+        // console.log(resArr)
+        // const uniqdata = [...new Set(WinnerData.map(obj=>[obj["address"],obj])).values()]
+        // console.log(uniqdata);
+        // console.log(uniqdata.length);
+        
 
     return(
         <>
@@ -96,7 +125,7 @@ export default function WinnerList() {
                             <Col md={4} className='d-flex align-items-center'>
                                 <img src={item.img} className='winnerImg' alt='img1' />
                                 <div className='text-truncate text-white ms-4' style={{maxWidth:'150px'}}>
-                                   <a className='link' href={` https://mumbai.polygonscan.com/address/${item.address}`} target="_blank">{item.address}</a> 
+                                   <a className='link' href={` https://bscscan.com/address/${item.address}`} target="_blank">{item.address.substring(0,5)+"...."+item.address.slice(-4)}</a> 
                                 </div>
                             </Col>
                             <Col md={4} className='d-flex align-items-center justify-content-center'>

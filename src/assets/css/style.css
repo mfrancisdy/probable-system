@@ -4,6 +4,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+body>.skiptranslate {
+    display: none;
+}
+
 .link {
     color: #fff;
     text-decoration: none;
@@ -45,6 +50,7 @@ p{
 }
 
 .header {
+    top: 0px;
     background: transparent;
     width: 100%;
     z-index: 10;
@@ -484,7 +490,7 @@ ul.social-icons {
     background: #fff;
     height: auto;
     border-radius: 12px;
-    padding: 40px;
+    padding: 20px;
 }
 
 .walletpopup-close {
@@ -498,7 +504,13 @@ ul.social-icons {
 }
 
 .walletpopup-img {
-    width: 87%;
+    width: 70%;
+}
+
+.walletpopup_row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .border-right.col-md-6 {
@@ -568,16 +580,30 @@ a.navbar-brand>img {
         overflow-x: scroll;
         padding: 10px 0;
     }
-    
+    .wallet-btn{
+        width: 100%;
+        height: 100%;
+    }
+    .walletpopup {
+        width: 100%;
+        /* padding: 10px; */
+    }
 }
 
 @media (max-width: 540px){
+   
+    .wallet-btn{
+        height: 100%;
+    }
     .nav-menu{
         float:none;
     }
     .scroll1-row {
         padding: 83px 0;
     }
+        .walletpopup-img {
+            width: 100%;
+        }
     .navbar {
         padding: 0px 14px !important;
     }
