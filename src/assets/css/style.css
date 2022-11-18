@@ -538,7 +538,7 @@ a.navbar-brand>img {
 
 /* Meadia Query */
 
-@media (max-width: 340px){
+@media (max-width: 355px){
     .scroll6-btn-tp {
         margin: 19px 0px 0 10px !important;
         position: relative;
@@ -579,7 +579,7 @@ a.navbar-brand>img {
         padding: 83px 0;
     }
     .navbar {
-        padding: 0px 14px;
+        padding: 0px 14px !important;
     }
     .header{
         background: rgba( 255, 255, 255, 0.65 );
@@ -587,7 +587,7 @@ a.navbar-brand>img {
         backdrop-filter: blur( 6px );
         -webkit-backdrop-filter: blur( 6px );
         border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
-        padding: 18px 14px;
+        padding: 5px 14px;
     }
     .justify-sm-none{
         justify-content: unset !important;
