@@ -38,7 +38,10 @@ export default function Header() {
     useEffect(() => {
     if (localStorage.getItem('connectedWallet')) {
         setWalletConnected(true);
-    }
+        }
+    else {
+        selectWallet();
+        }
     }, []);
     const connectWallet = async (wallet) => {
         if(wallet === 'metamask'){
@@ -232,12 +235,12 @@ export default function Header() {
                     <Col xs={6} sm={6} md={6} className='border-bottom wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Wc} alt='walletconnect' className='walletpopup-img'/>
                     </Col>
-                    <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
+                    {/* <Col xs={6} sm={6} md={6} className='border-right d-flex align-items-center wallet-btn' onClick={()=>{connectWallet('wc')}}>
                         <img src={Tp} alt='tokenpocket' className='walletpopup-img'/>
                     </Col>
                     <Col xs={6} sm={6} md={6} className='wallet-btn' onClick={()=>{connectWallet('bk')}}>
                         <img src={Bk} alt='bitkeep' className='walletpopup-img'/>
-                    </Col>
+                    </Col> */}
                 </Row>
             </div>
         </div>
