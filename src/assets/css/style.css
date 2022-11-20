@@ -561,7 +561,7 @@ a.navbar-brand>img {
         padding: 40px 24px !important;
     }
     .total-txt {
-        font-size: 11px !important;
+        font-size: 8px !important;
     }
     .walletpopup {
         width: 100%;
@@ -630,8 +630,11 @@ a.navbar-brand>img {
     .scroll3-col2 {
         padding: 0 2rem !important;
     }
-    .total-txt {
-        font-size: 14px;
+    .total-txt.p {
+        font-size: 10px !important;
+    }
+    .total-txt.h{
+        font-size: 11px !important;
     }
     ul.social-icons {
         text-align: center !important;
