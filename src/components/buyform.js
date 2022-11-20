@@ -76,7 +76,7 @@ export default function BuyForm() {
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
             setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
             const ticketsbought = await lotteryContract.getUserTicketCount(signer.getAddress());
-            settotalTicketOwned(ticketsbought);
+            settotalTicketOwned(ticketsbought.toString() / 1000000000000000000);
         } else if(localStorage.getItem('connectedWallet') === 'wc') {
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
