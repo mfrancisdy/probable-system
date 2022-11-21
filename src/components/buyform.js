@@ -50,9 +50,7 @@ export default function BuyForm() {
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
         setPoolIndex(poolIndex.toNumber());
         const poolDetails = await lotteryContract.pools(poolIndex);
-        // const poo = await lotteryContract.getPoolSize();
-        console.log(poolDetails[0]);
-        seteraddr(poolDetails[0])
+        seteraddr(poolDetails.ticketToken);
         setMaxTickets(poolDetails[2].toNumber());
         setTicketPrice((poolDetails[1].toString() / 1000000000000000000).toFixed(2));
         const poolSize = await lotteryContract.getCurrentPoolSize();
@@ -77,10 +75,9 @@ export default function BuyForm() {
 
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-            console.log(eraddr);
             const tokenContract = new ethers.Contract(eraddr, erc20abi, provider);
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            console.log((tokenBalance.toString() / 1000000000000000000).toFixed(2));
+            //console.log((tokenBalance.toString() / 1000000000000000000).toFixed(2));
             setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
             const ticketsbought = await lotteryContract.getUserTicketCount(signer.getAddress());
             settotalTicketOwned(ticketsbought.toString() / 1000000000000000000);
