@@ -86,7 +86,7 @@ export default function WinnerList() {
                     serialnumber: j+1,
                     amount: winneramount,
                 });
-                console.log(wd);
+                // console.log(wd);
             }
             setWinnerData(wd); 
         }
