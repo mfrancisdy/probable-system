@@ -45,17 +45,19 @@ export default function BuyForm() {
 
 
     const getPoolInfo = async () => {
-        const poolDetails = await lotteryContract.pools(0);
+        const poolIndex = await lotteryContract.getCurrentPoolIndex();
+        setPoolIndex(poolIndex.toNumber());
+        const poolDetails = await lotteryContract.pools(poolIndex);
+        const poo = await lotteryContract.getPoolSize();
+        console.log(poo.toNumber())
         setMaxTickets(poolDetails[2].toNumber());
-        setTicketPrice(poolDetails[1].toString() / 1000000000000000000);
+        setTicketPrice((poolDetails[1].toString() / 1000000000000000000).toFixed(2));
         const poolSize = await lotteryContract.getCurrentPoolSize();
         setTicketsSold(poolSize.toNumber());
         const percent = ((poolSize.toNumber() / poolDetails[2].toNumber()) * 100).toFixed(2);
         setSoldPercentage(percent);
         const availabletickets = poolDetails[2].toNumber() - poolSize.toNumber();
         setAvailableTickets(availabletickets);
-        const poolIndex = await lotteryContract.getCurrentPoolIndex();
-        setPoolIndex(poolIndex.toNumber());
         const tokenaddress = await lotteryContract.getPoolTicketToken();
         const response = await fetch('https://deep-index.moralis.io/api/v2/erc20/metadata?chain=bsc&addresses='+tokenaddress, {
             method: 'GET',
