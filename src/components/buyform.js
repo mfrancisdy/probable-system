@@ -21,7 +21,8 @@ export default function BuyForm() {
     const [ maxTickets, setMaxTickets ] = useState(0);
     const [ ticketPrice, setTicketPrice ] = useState(0);
     const [ tickets, setTickets ] = useState(0);
-    const [ totalAmount, setTotalAmount ] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [totalTicketOwned, settotalTicketOwned] = useState(0);
     const [ ticketsSold, setTicketsSold ] = useState(0);
     const [ soldPercentage, setSoldPercentage ] = useState(0);
     const [ poolIndex, setPoolIndex ] = useState(0);
@@ -74,6 +75,8 @@ export default function BuyForm() {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
             setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
+            const ticketsbought = await lotteryContract.getUserTicketCount(signer.getAddress());
+            settotalTicketOwned(ticketsbought.toString() / 1000000000000000000);
         } else if(localStorage.getItem('connectedWallet') === 'wc') {
             const connector = new WalletConnect({
                 bridge: "https://bridge.walletconnect.org",
@@ -116,7 +119,7 @@ export default function BuyForm() {
         } else {
             const noOfTickets = e;
             setTickets(noOfTickets);
-            setTotalAmount(noOfTickets * ticketPrice);
+            setTotalAmount(totalTicketOwned*ticketPrice);
         }
     }
 
@@ -381,17 +384,19 @@ export default function BuyForm() {
                             </Col>
                         </Row>
                         <Row className="mt-3 total-value">
-                            <Col xs={6} sm={6} md={6}>
-                                <p className="total-txt">Available Tickets</p>
-                                <p className="total-txt">Token Balance</p>
-                                <p className="total-txt">Per Ticket Price</p>
-                                <p className="total-txt">Total Amount</p>
+                            <Col xs={8} sm={8} md={6}>
+                                <p className="total-txt h">Available Tickets</p>
+                                <p className="total-txt h">Token Balance</p>
+                                <p className="total-txt h">Per Ticket Price</p>
+                                <p className="total-txt h">Total Tickets Owned</p>
+                                <p className="total-txt h">Total Amount</p>
                             </Col>
-                            <Col xs={6} sm={6} md={6} style={{textAlign:'right'}}>
-                                <p className="total-txt">{availableTickets}</p>
-                                <p className="total-txt">{tokenBalance}${tokenName}</p>
-                                <p className="total-txt">{ticketPrice} ${tokenName}</p>
-                                <p className="total-txt">{totalAmount} ${tokenName}</p>
+                            <Col xs={4} sm={4} md={6} style={{textAlign:'right'}}>
+                                <p className="total-txt p">{availableTickets}</p>
+                                <p className="total-txt p">{tokenBalance}${tokenName}</p>
+                                <p className="total-txt p">{ticketPrice} ${tokenName}</p>
+                                <p className="total-txt p">{totalTicketOwned} ${tokenName}</p>
+                                <p className="total-txt p">{totalAmount} ${tokenName}</p>
                             </Col>
                         </Row>
                         <Row className="mt-3">
