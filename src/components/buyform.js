@@ -388,14 +388,14 @@ export default function BuyForm() {
                             </Col>
                         </Row>
                         <Row className="mt-3 total-value">
-                            <Col xs={8} sm={8} md={6}>
+                            <Col xs={6} sm={8} md={6}>
                                 <p className="total-txt h">Available Tickets</p>
                                 <p className="total-txt h">Token Balance</p>
                                 <p className="total-txt h">Per Ticket Price</p>
                                 <p className="total-txt h">Total Tickets Owned</p>
                                 <p className="total-txt h">Total Amount</p>
                             </Col>
-                            <Col xs={4} sm={4} md={6} style={{textAlign:'right'}}>
+                            <Col xs={6} sm={4} md={6} style={{textAlign:'right'}}>
                                 <p className="total-txt p">{availableTickets}</p>
                                 <p className="total-txt p">{tokenBalance}${tokenName}</p>
                                 <p className="total-txt p">{ticketPrice} ${tokenName}</p>
