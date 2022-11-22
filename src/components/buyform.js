@@ -59,6 +59,7 @@ export default function BuyForm() {
         seteraddr(poolDetails[0]);
         tokenbalance(poolDetails[0]);
         console.log(eraddr);
+        seteraddr(poolDetails.ticketToken);
         setMaxTickets(poolDetails[2].toNumber());
         setTicketPrice((poolDetails[1].toString() / 1000000000000000000).toFixed(2));
         const poolSize = await lotteryContract.getCurrentPoolSize();
@@ -83,10 +84,10 @@ export default function BuyForm() {
 
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-            const tokenContract = new ethers.Contract(er, erc20abi, provider);
-            // console.log(er);
+
+            const tokenContract = new ethers.Contract(eraddr, erc20abi, provider);
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
-            console.log((tokenBalance.toString() / 1000000000000000000).toFixed(2));
+            //console.log((tokenBalance.toString() / 1000000000000000000).toFixed(2));
             setTokenBalance((tokenBalance.toString() / 1000000000000000000).toFixed(2));
             const ticketsbought = await lotteryContract.getUserTicketCount(signer.getAddress());
             settotalTicketOwned(ticketsbought.toString() / 1000000000000000000);
@@ -397,7 +398,8 @@ export default function BuyForm() {
                             </Col>
                         </Row>
                         <Row className="mt-3 total-value">
-                            <Col style={{alignItems:'space-between'}} xs={6} sm={6} md={6}>
+
+                            <Col xs={6} sm={6} md={6}>
                                 <p className="total-txt h">Available Tickets</p>
                                 <p className="total-txt h">Balance</p>
                                 <p className="total-txt h">Ticket Price</p>
@@ -405,6 +407,7 @@ export default function BuyForm() {
                                 <p className="total-txt h">Total Amount</p>
                             </Col>
                             <Col  xs={6} sm={6} md={6} style={{textAlign:'right'}}>
+
                                 <p className="total-txt p">{availableTickets}</p>
                                 <p className="total-txt p">{tokenBalance}<span>${tokenName}</span></p>
                                 <p className="total-txt p">{ticketPrice} <span>${tokenName}</span></p>
