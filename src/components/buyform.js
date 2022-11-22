@@ -408,8 +408,8 @@ export default function BuyForm() {
                             <Col  xs={6} sm={6} md={6} style={{textAlign:'right'}}>
 
                                 <p className="total-txt p">{availableTickets}</p>
-                                <p className="total-txt p">{tokenBalance}<span>${tokenName}</span></p>
-                                <p className="total-txt p">{ticketPrice} <span>${tokenName}</span></p>
+                                <p className="total-txt p">{tokenBalance}<span><br/>${tokenName}</span></p>
+                                <p className="total-txt p">{ticketPrice} <span><br/>${tokenName}</span></p>
                                 <p className="total-txt p">{totalTicketOwned} <span>${tokenName}</span></p>
                                 <p className="total-txt p">{totalAmount} <span>${tokenName}</span></p>
                             </Col>

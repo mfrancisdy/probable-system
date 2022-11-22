@@ -566,12 +566,14 @@ a.navbar-brand>img {
         padding: 40px 24px !important;
     }
 
-    .total-txt.h{
-        padding-top: 10px;
-    }
-    .total-txt.p{
-        margin-top: 10px;
-    }
+   .total-txt.h {
+       padding-top: 18px !important;
+   }
+
+   .total-txt.p {
+       margin-top: 18px;
+       font-size: 11px !important;
+   }
 
     .total-txt {
         font-size: 8px !important;
@@ -604,6 +606,15 @@ a.navbar-brand>img {
 }
 
 @media (max-width: 540px){
+
+    .total-txt.h {
+            padding-top: 13px;
+        }
+    
+        .total-txt.p {
+            margin-top: 20px;
+            font-size: 11px !important;
+        }
    
     .wallet-btn{
         height: 100%;
