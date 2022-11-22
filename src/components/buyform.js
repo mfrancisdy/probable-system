@@ -56,8 +56,7 @@ export default function BuyForm() {
         const poolDetails = await lotteryContract.pools(poolIndex);
         // const poo = await lotteryContract.getPoolSize();
         // console.log(poolDetails[0]);
-        seteraddr(poolDetails[0]);
-        tokenbalance(poolDetails[0]);
+        tokenbalance();
         console.log(eraddr);
         seteraddr(poolDetails.ticketToken);
         setMaxTickets(poolDetails[2].toNumber());
@@ -80,7 +79,7 @@ export default function BuyForm() {
         setTokenName(json[0].symbol);
         }
 
-    const tokenbalance = async (er) => {
+    const tokenbalance = async () => {
 
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
