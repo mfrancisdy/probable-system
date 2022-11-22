@@ -38,11 +38,15 @@ export default function BuyForm() {
     useEffect(() => {
         const interval = setInterval(() => {
             getPoolInfo();
+            console.log(eraddr);
         }, 5000);
-        const inter = setInterval(() => {
-            tokenbalance();
-        }, 5000);
-        return () => { clearInterval(interval); clearInterval(inter); }
+        // const inter = setInterval(() => {
+        //     // tokenbalance();
+        // }, 5000);
+        return () => {
+            clearInterval(interval);
+            // clearInterval(inter);
+        }
     }, []);
 
 
@@ -50,6 +54,10 @@ export default function BuyForm() {
         const poolIndex = await lotteryContract.getCurrentPoolIndex();
         setPoolIndex(poolIndex.toNumber());
         const poolDetails = await lotteryContract.pools(poolIndex);
+        // const poo = await lotteryContract.getPoolSize();
+        // console.log(poolDetails[0]);
+        tokenbalance();
+        console.log(eraddr);
         seteraddr(poolDetails.ticketToken);
         setMaxTickets(poolDetails[2].toNumber());
         setTicketPrice((poolDetails[1].toString() / 1000000000000000000).toFixed(2));
@@ -75,6 +83,7 @@ export default function BuyForm() {
 
         if (localStorage.getItem('connectedWallet') === 'metamask') {
             const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
+
             const tokenContract = new ethers.Contract(eraddr, erc20abi, provider);
             const tokenBalance = await tokenContract.balanceOf(signer.getAddress());
             //console.log((tokenBalance.toString() / 1000000000000000000).toFixed(2));
@@ -388,19 +397,21 @@ export default function BuyForm() {
                             </Col>
                         </Row>
                         <Row className="mt-3 total-value">
-                            <Col xs={6} sm={8} md={6}>
+
+                            <Col xs={6} sm={6} md={6}>
                                 <p className="total-txt h">Available Tickets</p>
-                                <p className="total-txt h">Token Balance</p>
-                                <p className="total-txt h">Per Ticket Price</p>
-                                <p className="total-txt h">Total Tickets Owned</p>
-                                <p className="total-txt h">Total Amount</p>
+                                <p className="total-txt h"><br/>Balance</p>
+                                <p className="total-txt h"><br/>Ticket Price</p>
+                                <p className="total-txt h">My Tickets</p>
+                                <p className="total-txt h"><br/>Total Amount</p>
                             </Col>
-                            <Col xs={6} sm={4} md={6} style={{textAlign:'right'}}>
+                            <Col  xs={6} sm={6} md={6} style={{textAlign:'right'}}>
+
                                 <p className="total-txt p">{availableTickets}</p>
-                                <p className="total-txt p">{tokenBalance}${tokenName}</p>
-                                <p className="total-txt p">{ticketPrice} ${tokenName}</p>
-                                <p className="total-txt p">{totalTicketOwned} ${tokenName}</p>
-                                <p className="total-txt p">{totalAmount} ${tokenName}</p>
+                                <p className="total-txt p">{tokenBalance}<br/><span>${tokenName}</span></p>
+                                <p className="total-txt p">{ticketPrice}<br/> <span>${tokenName}</span></p>
+                                <p className="total-txt p">{totalTicketOwned} <span>${tokenName}</span></p>
+                                <p className="total-txt p">{totalAmount}<br/> <span>${tokenName}</span></p>
                             </Col>
                         </Row>
                         <Row className="mt-3">

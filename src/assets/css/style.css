@@ -322,6 +322,7 @@ section.scroll1 {
     line-height: 26px!important;
 }
 
+
 .buy-btn {
     background: #8e71ea;
     border: none;
@@ -557,9 +558,23 @@ a.navbar-brand>img {
         left: -12px;
     }
 
+    /* .total-txt span{
+    display: block;
+    } */
+
     .buy-form-container {
         padding: 40px 24px !important;
     }
+
+   /* .total-txt.h {
+       padding-top: 18px !important;
+   }
+
+   .total-txt.p {
+       margin-top: 18px;
+       font-size: 11px !important;
+   } */
+
     .total-txt {
         font-size: 8px !important;
     }
@@ -590,7 +605,27 @@ a.navbar-brand>img {
     }
 }
 
+/* @media screen and (max-width: 420px) {
+.total-txt.h {
+        padding-top: 13px;
+    }
+
+    .total-txt.p {
+        margin-top: 10px !important;
+        font-size: 10px !important;
+    }
+} */
+
 @media (max-width: 540px){
+
+     .total-txt.h {
+            /* padding-top: 3px; */
+        }
+    /*
+    .total-txt.p {
+        margin-top: 20px;
+        font-size: 11px !important;
+    } */
    
     .wallet-btn{
         height: 100%;
