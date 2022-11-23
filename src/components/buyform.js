@@ -388,7 +388,7 @@ export default function BuyForm() {
                     <h3 className="form-title">Enter Tickets</h3>
                     <form onSubmit={(e)=>buyTicket(e)}>
                         <input className="form-control buy-form-i my-3" type="number" min={1} onChange={handleChange} value={tickets} placeholder="Enter Total Number of Tickets To Buy" />
-                        <Row>
+                        <Row className="row_2">
                             <Col md={12}>
                                 <button type="button" className="ticketVal-btn" onClick={()=>{calculateTickets(5)}}>5 Tickets</button>
                                 <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(10)}}>10 Tickets</button>
@@ -396,25 +396,30 @@ export default function BuyForm() {
                                 <button type='button' className="ticketVal-btn" onClick={()=>{calculateTickets(50)}}>50 Tickets</button>
                             </Col>
                         </Row>
-                        <Row className="mt-3 total-value">
+                        <Row className="row_2 mt-3 total-value">
 
-                            <Col xs={6} sm={6} md={6}>
-                                <p className="total-txt h">Available Tickets</p>
-                                <p className="total-txt h"><br/>Balance</p>
-                                <p className="total-txt h"><br/>Ticket Price</p>
+                            <Col className="col_h" xs={6} sm={6} md={6}>
+                                <p className="total-txt h">Ticket Stock</p>
+                                <p className="total-txt h">Balance</p>
+                                <p className="total-txt h">Ticket Price</p>
                                 <p className="total-txt h">My Tickets</p>
-                                <p className="total-txt h"><br/>Total Amount</p>
+                                <p className="total-txt h">Total Amount</p>
                             </Col>
-                            <Col  xs={6} sm={6} md={6} style={{textAlign:'right'}}>
+                            <Col className="col_p"  xs={6} sm={6} md={6} style={{textAlign:'right'}}>
 
+                                {/* <p className="total-txt p">{availableTickets}</p>
+                                <p className="total-txt p">{123456} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{12345678} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{344} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{123456789} <span>${"NAT-DAO"}</span></p> */}
                                 <p className="total-txt p">{availableTickets}</p>
-                                <p className="total-txt p">{tokenBalance}<br/><span>${tokenName}</span></p>
-                                <p className="total-txt p">{ticketPrice}<br/> <span>${tokenName}</span></p>
-                                <p className="total-txt p">{totalTicketOwned} <span>${tokenName}</span></p>
-                                <p className="total-txt p">{totalAmount}<br/> <span>${tokenName}</span></p>
+                                <p className="total-txt p">{tokenBalance} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{ticketPrice} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{totalTicketOwned} <span>${"NAT-DAO"}</span></p>
+                                <p className="total-txt p">{totalAmount} <span>${"NAT-DAO"}</span></p>
                             </Col>
                         </Row>
-                        <Row className="mt-3">
+                        <Row className="row_2 mt-3">
                             <Col md={12} className='text-center'>
                                 <button type='submit' className="buy-btn">Buy Tickets</button>
                             </Col>
