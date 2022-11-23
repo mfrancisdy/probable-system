@@ -550,6 +550,10 @@ a.navbar-brand>img {
 }
 
 /* Meadia Query */
+.total-txt span{
+/* display: block; */
+font-size: 10px !important;
+}
 
 @media (max-width: 355px){
     .scroll6-btn-tp {
@@ -558,22 +562,22 @@ a.navbar-brand>img {
         left: -12px;
     }
 
-    /* .total-txt span{
-    display: block;
-    } */
-
-    .buy-form-container {
-        padding: 40px 24px !important;
-    }
-
-   /* .total-txt.h {
-       padding-top: 18px !important;
+   .total-txt span {
+       /* display: block; */
+       font-size: 8px !important;
    }
 
-   .total-txt.p {
-       margin-top: 18px;
-       font-size: 11px !important;
-   } */
+    .buy-form-container {
+        padding: 40px 10px !important;
+    }
+
+    .col_h {
+        width: 30% !important;
+    }
+
+    .col_p {
+        width: 70% !important;
+    }
 
     .total-txt {
         font-size: 8px !important;
@@ -605,27 +609,59 @@ a.navbar-brand>img {
     }
 }
 
-/* @media screen and (max-width: 420px) {
-.total-txt.h {
-        padding-top: 13px;
+@media screen and (max-width: 420px) {
+    .col_h {
+        width: 25% !important;
     }
 
-    .total-txt.p {
-        margin-top: 10px !important;
-        font-size: 10px !important;
+    .col_p {
+        width: 75% !important;
     }
-} */
+
+    .total-txt span{
+       font-size: 8px !important; 
+    }
+
+}
 
 @media (max-width: 540px){
 
-     .total-txt.h {
-            /* padding-top: 3px; */
-        }
+    /* .total-txt span {
+            display: block;
+            font-size: 8px !important;
+            width: fit-content;
+            padding: 0px !important;
+        } */
+
+    .col_h,.col_p{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .col_h{
+        width: 45% !important;
+    }
+
+    .col_p{
+        width: 55% !important;
+    }
+
+    .row_2{
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
     /*
     .total-txt.p {
         margin-top: 20px;
         font-size: 11px !important;
     } */
+
+    .buy-form-container {
+        padding: 40px 15px !important;
+    }
    
     .wallet-btn{
         height: 100%;
